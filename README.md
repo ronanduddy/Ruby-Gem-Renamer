@@ -1,4 +1,4 @@
-# ProjectName
+# Rename Gem
 
 Description of project
 
@@ -7,7 +7,7 @@ Description of project
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'project_name'
+gem 'rename_gem'
 ```
 
 And then execute:
@@ -19,13 +19,13 @@ bundle install
 Or install it yourself as:
 
 ```Shell
-gem install project_name
+gem install rename_gem
 ```
 
 ## Usage
 
 ```Shell
-bundle exec project_name
+bundle exec rename_gem . 'new_name'
 ```
 
 ## Development
@@ -39,7 +39,3 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/ronand
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
-## Acknowledgments
-
-* Somebody

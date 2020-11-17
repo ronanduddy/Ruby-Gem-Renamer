@@ -1,9 +1,9 @@
 version: '3.8'
 
 services:
-  project_name:
+  rename_gem:
     build: .
-    entrypoint: bundle exec bin/project_name
+    entrypoint: bundle exec bin/rename_gem
     volumes:
       - ./:/usr/src/app
   dev:

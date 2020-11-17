@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'project_name/version'
+require 'rename_gem/version'
 
 # Base/top module
-module ProjectName
+module RenameGem
 end

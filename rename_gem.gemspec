@@ -1,21 +1,21 @@
 # frozen_string_literal: true
 
-require_relative 'lib/project_name/version'
+require_relative 'lib/rename_gem/version'
 
 Gem::Specification.new do |spec|
-  spec.name = 'project_name'
-  spec.version = ProjectName::VERSION
+  spec.name = 'rename_gem'
+  spec.version = RenameGem::VERSION
   spec.platform = Gem::Platform::RUBY
-  spec.summary = 'Gem summary'
-  spec.description = 'Gem description'
-  spec.homepage = 'https://github.com/ronanduddy/project_name'
+  spec.summary = 'A gem that will renames Gems for you'
+  spec.description = 'Have a hard time renaming Gems, find it annoying? Hopefully this should help!'
+  spec.homepage = 'https://github.com/ronanduddy/rename_gem'
   spec.license = 'MIT'
   spec.authors = ['Rónán Duddy']
   spec.email = []
 
   spec.files = []
   spec.bindir = 'bin'
-  spec.executables = ['project_name']
+  spec.executables = ['rename_gem']
   spec.require_path = 'lib'
 
   spec.required_ruby_version = '>= 3.0.0'

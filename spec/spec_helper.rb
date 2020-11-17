@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require 'project_name'
+require 'rename_gem'
 require 'pry'
 
 RSpec.configure do |config|
-  include ProjectName
+  include RenameGem
 
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest

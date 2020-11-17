@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    project_name (0.0.1)
+    rename_gem (0.0.1)
 
 GEM
   remote: https://rubygems.org/
@@ -89,7 +89,7 @@ PLATFORMS
 DEPENDENCIES
   guard (~> 2.16, >= 2.16.2)
   guard-rspec (~> 4.7, >= 4.7.3)
-  project_name!
+  rename_gem!
   pry (~> 0.13.1)
   pry-byebug (~> 3.9)
   rake (~> 13.0, >= 13.0.1)
