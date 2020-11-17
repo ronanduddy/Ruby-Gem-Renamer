@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  project_name:
+    build: .
+    entrypoint: bundle exec bin/project_name
+    volumes:
+      - ./:/usr/src/app
+  dev:
+    build: .
+    volumes:
+      - ./:/usr/src/app
+  test:
+    build: .
+    command: bundle exec rake
