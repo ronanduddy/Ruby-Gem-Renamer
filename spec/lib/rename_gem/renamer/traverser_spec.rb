@@ -17,15 +17,14 @@ RSpec.describe Renamer::Traverser do
       let(:file) { "#{fixtures_dir}/hello_world.rb" }
 
       it 'renames directories and files' do
-        expect(File.exists?(file)).to be true
+        expect(File.exist?(file)).to be true
         run
-        expect(File.exists?(file)).to be false
-        expect(File.exists?("#{fixtures_dir}/foo_bar.rb")).to be true
+        expect(File.exist?(file)).to be false
+        expect(File.exist?("#{fixtures_dir}/foo_bar.rb")).to be true
       end
     end
 
     context 'with a directory' do
-
       let(:pre_structure) do
         ['/usr/src/app/spec/fixtures/.hello_world',
          '/usr/src/app/spec/fixtures/HelloWorld',
