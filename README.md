@@ -1,6 +1,8 @@
 # Rename Gem
 
-This Ruby Gem is a work in progress, its goal is to be able to rename gems. 
+This Ruby Gem is a work in progress, its goal is to be able to rename gems.
+
+[![Build Status](https://travis-ci.org/ronanduddy/Ruby-Gem-Renamer.svg?branch=master)](https://travis-ci.org/ronanduddy/Ruby-Gem-Renamer)
 
 ## Installation
 
