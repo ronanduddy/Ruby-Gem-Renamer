@@ -44,10 +44,10 @@ module RenameGem
         new_path = path.build(replacement).to_s
 
         unless path.to_s == new_path
+          modify if path.file?
+
           path.rename(new_path)
           puts "rename #{path} to #{new_path}"
-
-          modify if path.file?
 
           @name = nil
           @new_name = nil
@@ -57,23 +57,30 @@ module RenameGem
       end
 
       def modify
+        require 'tempfile'
+
+        file = File.new(path.to_s)
+        permissions = file.stat.mode
+        uid = file.stat.uid
+        gid = file.stat.gid
         temp_file = Tempfile.new(path.filename)
         lines_changed = 0
 
-        File.open(path.to_s, 'r') do |file|
-          file.each_line do |line|
-            temp_file.puts replace(line)
-            lines_changed += 1
-          rescue StringReplacer::ContentNotFound => e
-            temp_file.puts line
-          end
+        file.each_line do |line|
+          temp_file.puts replace(line)
+          lines_changed += 1
+        rescue StringReplacer::ContentNotFound => e
+          temp_file.puts line
         end
 
-        FileUtils.mv(temp_file.path, path.to_s) if lines_changed.positive?
-        puts "#{lines_changed} lines changed in #{path}"
-      ensure
         temp_file.close
+        FileUtils.mv(temp_file.path, path.to_s) if lines_changed.positive?
         temp_file.unlink
+
+        file.chmod(permissions)
+        file.chown(uid, gid)
+
+        puts "#{lines_changed} lines changed in #{path}"
       end
 
       def replace(content)

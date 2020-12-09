@@ -5,12 +5,12 @@ module RenameGem
   require 'rename_gem/renamer'
 
   class CLI < Thor
-    desc 'rename', 'rename all instances of FROM to TO regardless of case.'
-    option :from, type: :string, required: true
-    option :to, type: :string, required: true
+    desc 'rename', 'rename all instances of FROMs to TO for a given file'
+    option :from, type: :string, :aliases => "-f", required: true, desc: 'the original name'
+    option :to,  type: :string, :aliases => "-t", required: true, desc: 'the new name'
+    option :path, type: :string, :aliases => "-p", required: true, desc: 'the path to run the renaming'
     def rename
-      path = Dir.pwd
-      Renamer.run(options, path)
+      Renamer.run(options)
     end
   end
 end

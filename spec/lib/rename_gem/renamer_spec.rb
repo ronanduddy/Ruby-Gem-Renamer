@@ -2,9 +2,8 @@
 
 RSpec.describe Renamer do
   describe '.run' do
-    subject(:run) { described_class.run(options, path) }
-    let(:options) { { from: 'hello_world', to: 'foo_bar' } }
-    let(:path) { '.' }
+    subject(:run) { described_class.run(options) }
+    let(:options) { { from: 'hello_world', to: 'foo_bar', path: 'spec/fixtures/hello_world.rb' } }
     let(:traverser) { instance_double(described_class::Traverser, run: 'traversed!') }
 
     it 'executes the traverser' do

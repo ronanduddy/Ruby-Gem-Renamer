@@ -11,24 +11,26 @@ module RenameGem
       end
 
       def run(path)
-        directory = Entity.new(path)
+        entity = Entity.new(path)
 
-        change_files(directory)
-        recurse!(directory)
+        if entity.path.file?
+          entity.change(name).to(new_name)
+          return
+        end
+
+        recurse!(entity)
       end
 
       private
 
       def recurse!(directory)
-        directory.directories.each do |sub_directory|
-          recurse!(sub_directory)
-          change_files(sub_directory)
-          sub_directory.change(name).to(new_name)
-        end
-      end
-
-      def change_files(directory)
         directory.files.each { |file| file.change(name).to(new_name) }
+
+        directory.directories.each do |sub_directory|
+          sub_directory.change(name).to(new_name)
+
+          recurse!(sub_directory)
+        end
       end
     end
   end
