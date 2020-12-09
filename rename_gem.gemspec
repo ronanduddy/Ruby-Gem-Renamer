@@ -19,7 +19,9 @@ Gem::Specification.new do |spec|
   spec.require_path = 'lib'
 
   spec.required_ruby_version = '>= 3.0.0'
+  spec.add_runtime_dependency 'thor', '~> 1.0', '>= 1.0.1'
 
+  spec.add_development_dependency 'fakefs', '~> 1.2', '>= 1.2.3'
   spec.add_development_dependency 'guard', '~> 2.16', '>= 2.16.2'
   spec.add_development_dependency 'guard-rspec', '~> 4.7', '>= 4.7.3'
   spec.add_development_dependency 'pry', '~> 0.13.1'
