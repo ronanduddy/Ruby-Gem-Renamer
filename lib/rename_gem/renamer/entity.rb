@@ -68,7 +68,7 @@ module RenameGem
             temp_file.puts line
           end
         end
-        # TODO: check file permissions!
+
         FileUtils.mv(temp_file.path, path.to_s) if lines_changed.positive?
         puts "#{lines_changed} lines changed in #{path}"
       ensure
