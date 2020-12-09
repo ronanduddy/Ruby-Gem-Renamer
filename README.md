@@ -1,6 +1,6 @@
 # Rename Gem
 
-Description of project
+This Ruby Gem is a work in progress, its goal is to be able to rename gems. 
 
 ## Installation
 
@@ -25,16 +25,16 @@ gem install rename_gem
 ## Usage
 
 ```Shell
-bundle exec rename_gem . 'new_name'
+bundle exec rename_gem --from old_name --to new_name
 ```
 
 ## Development
 
-After checking out the repo, make sure to change instances of 'ProjectName' or 'project_name' in files or directory names to what ever you like. Then, run `make test` to run all the tests or `make guard` to use guard for testing. You can also run `make irb` for an interactive prompt that will allow you to experiment.
+Run `make test` to run all the tests or `make guard` to use guard for testing. You can also run `make irb` for an interactive prompt that will allow you to experiment.
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/ronanduddy/project_name. Please read [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) for details on our code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/ronanduddy/Ruby-Gem-Renamer. Please read [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) for details on our code of conduct.
 
 ## License
 
