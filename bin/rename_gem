@@ -3,4 +3,4 @@
 
 require 'rename_gem'
 
-puts RenameGem::VERSION
+RenameGem::CLI.start(ARGV)
