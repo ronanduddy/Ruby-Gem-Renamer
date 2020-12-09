@@ -27,7 +27,7 @@ gem install rename_gem
 ## Usage
 
 ```Shell
-bundle exec rename_gem --from old_name --to new_name
+bundle exec rename_gem rename -f hello_world -t foo_bar -p spec/fixtures/
 ```
 
 ## Development
