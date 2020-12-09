@@ -23,7 +23,7 @@ RSpec.describe CLI do
 
       it 'runs the renamer' do
         expect(remamer).to receive(:run)
-          .with({from: 'hello_world', to: 'foo_bar'}, '/usr/src/app' )
+          .with({ from: 'hello_world', to: 'foo_bar' }, '/usr/src/app')
         rename
       end
     end
