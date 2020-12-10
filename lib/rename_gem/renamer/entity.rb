@@ -42,8 +42,7 @@ module RenameGem
       private
 
       def rename
-        replacement = modifier.replacement(path.filename)
-        new_path = path.build(replacement).to_s
+        new_path = path.build(modifier.replacement(path.filename)).to_s
 
         unless path.to_s == new_path
           file_handler.change(modifier) if path.file?
@@ -51,8 +50,7 @@ module RenameGem
           path.rename(new_path)
           puts "rename #{path} to #{new_path}"
 
-          @name = nil
-          @new_name = nil
+          modifier = Modifier.new
         end
       rescue Modifier::ReplacementNotFound => e
         puts "ignoring #{e.message}"

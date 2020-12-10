@@ -2,27 +2,16 @@
 
 require 'support/shared_context/fake_file_system'
 
-RSpec.describe Renamer::Traverser do
-  let(:traverser) { described_class.new(name, new_name) }
+RSpec.describe Renamer::DirectoryHandler do
+  let(:directory_handler) { described_class.new(name, new_name) }
   let(:name) { 'hello_world' }
   let(:new_name) { 'foo_bar' }
 
-  describe '#run' do
-    subject(:run) { traverser.run(fixtures_dir) }
+  describe '#recurse!' do
+    subject(:recurse!) { directory_handler.recurse!(entity) }
+    let(:entity) { Renamer::Entity.new(fixtures_dir, nil) }
 
     include_context 'fake file system'
-
-    context 'with a file' do
-      subject(:run) { traverser.run(file) }
-      let(:file) { "#{fixtures_dir}/hello_world.rb" }
-
-      it 'renames directories and files' do
-        expect(File.exist?(file)).to be true
-        run
-        expect(File.exist?(file)).to be false
-        expect(File.exist?("#{fixtures_dir}/foo_bar.rb")).to be true
-      end
-    end
 
     context 'with a directory' do
       let(:pre_structure) do
@@ -67,7 +56,7 @@ RSpec.describe Renamer::Traverser do
 
       it 'renames directories and files' do
         expect(fixtures_dir_contents).to eq pre_structure
-        run
+        recurse!
         expect(fixtures_dir_contents).to eq post_structure
       end
     end
