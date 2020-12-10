@@ -13,7 +13,7 @@ Gem::Specification.new do |spec|
   spec.authors = ['Rónán Duddy']
   spec.email = []
 
-  spec.files = []
+  spec.files = ['lib/rename_gem.rb']
   spec.bindir = 'bin'
   spec.executables = ['rename_gem']
   spec.require_path = 'lib'
