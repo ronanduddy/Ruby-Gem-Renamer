@@ -1,4 +1,4 @@
-FROM ruby:3.0.0-preview1-alpine3.12
+FROM ruby:2.7.2-alpine3.12
 MAINTAINER Ronan Duddy
 
 ENV BUILD_PACKAGES build-base less git

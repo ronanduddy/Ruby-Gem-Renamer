@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    rename_gem (0.0.1)
+    rename_gem (0.0.2)
       thor (~> 1.0, >= 1.0.1)
 
 GEM

@@ -25,5 +25,5 @@ lint:
 	@docker-compose run --rm dev rubocop -A
 
 release:
-	@docker-compose build dev
-	@docker-compose run --rm dev bundle exec rake build release_gem
+	@docker-compose build release
+	@docker-compose run --rm release

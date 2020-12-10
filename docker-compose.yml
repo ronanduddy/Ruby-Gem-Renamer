@@ -13,3 +13,6 @@ services:
   test:
     build: .
     command: bundle exec rake
+  release:
+    build: .
+    command: bundle exec rake build release_gem
