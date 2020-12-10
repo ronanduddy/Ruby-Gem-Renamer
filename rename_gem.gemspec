@@ -8,7 +8,7 @@ Gem::Specification.new do |spec|
   spec.platform = Gem::Platform::RUBY
   spec.summary = 'A gem that will renames Gems for you'
   spec.description = 'Have a hard time renaming Gems, find it annoying? Hopefully this should help!'
-  spec.homepage = 'https://github.com/ronanduddy/rename_gem'
+  spec.homepage = 'https://github.com/ronanduddy/Ruby-Gem-Renamer'
   spec.license = 'MIT'
   spec.authors = ['Rónán Duddy']
   spec.email = []
