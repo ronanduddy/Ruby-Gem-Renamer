@@ -20,8 +20,10 @@ module Helpers
       FakeFS.clear!
     end
 
-    def fake_file_system
-      Dir["#{fixtures_dir}/**/**"]
+    def fixtures_dir_contents
+      Dir["#{fixtures_dir}/**/**"].map do |path|
+        path.gsub("#{fixtures_dir}/", '')
+      end
     end
 
     def fixtures_file(file)

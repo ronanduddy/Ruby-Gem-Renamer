@@ -26,49 +26,49 @@ RSpec.describe Renamer::Traverser do
 
     context 'with a directory' do
       let(:pre_structure) do
-        ['/usr/src/app/spec/fixtures/.hello_world',
-         '/usr/src/app/spec/fixtures/HelloWorld',
-         '/usr/src/app/spec/fixtures/HelloWorld/.keep',
-         '/usr/src/app/spec/fixtures/dir_hello_world',
-         '/usr/src/app/spec/fixtures/dir_hello_world/.keep',
-         '/usr/src/app/spec/fixtures/hello_world',
-         '/usr/src/app/spec/fixtures/hello_world.rb',
-         '/usr/src/app/spec/fixtures/hello_world/.keep',
-         '/usr/src/app/spec/fixtures/hello_world_dir',
-         '/usr/src/app/spec/fixtures/hello_world_dir/.keep',
-         '/usr/src/app/spec/fixtures/hello_world_empty_spec.rb',
-         '/usr/src/app/spec/fixtures/hello_world_no_ext',
-         '/usr/src/app/spec/fixtures/nested_dirs',
-         '/usr/src/app/spec/fixtures/nested_dirs/hello_world.rb',
-         '/usr/src/app/spec/fixtures/nested_dirs/nested_hello_world',
-         '/usr/src/app/spec/fixtures/nested_dirs/nested_hello_world/.keep',
-         '/usr/src/app/spec/fixtures/nested_dirs/nested_hello_world/hello_world_no_ext']
+        ['.hello_world',
+         'HelloWorld',
+         'HelloWorld/.keep',
+         'dir_hello_world',
+         'dir_hello_world/.keep',
+         'hello_world',
+         'hello_world.rb',
+         'hello_world/.keep',
+         'hello_world_dir',
+         'hello_world_dir/.keep',
+         'hello_world_empty_spec.rb',
+         'hello_world_no_ext',
+         'nested_dirs',
+         'nested_dirs/hello_world.rb',
+         'nested_dirs/nested_hello_world',
+         'nested_dirs/nested_hello_world/.keep',
+         'nested_dirs/nested_hello_world/hello_world_no_ext']
       end
 
       let(:post_structure) do
-        ['/usr/src/app/spec/fixtures/.foo_bar',
-         '/usr/src/app/spec/fixtures/FooBar',
-         '/usr/src/app/spec/fixtures/FooBar/.keep',
-         '/usr/src/app/spec/fixtures/dir_foo_bar',
-         '/usr/src/app/spec/fixtures/dir_foo_bar/.keep',
-         '/usr/src/app/spec/fixtures/foo_bar',
-         '/usr/src/app/spec/fixtures/foo_bar.rb',
-         '/usr/src/app/spec/fixtures/foo_bar/.keep',
-         '/usr/src/app/spec/fixtures/foo_bar_dir',
-         '/usr/src/app/spec/fixtures/foo_bar_dir/.keep',
-         '/usr/src/app/spec/fixtures/foo_bar_empty_spec.rb',
-         '/usr/src/app/spec/fixtures/foo_bar_no_ext',
-         '/usr/src/app/spec/fixtures/nested_dirs',
-         '/usr/src/app/spec/fixtures/nested_dirs/foo_bar.rb',
-         '/usr/src/app/spec/fixtures/nested_dirs/nested_foo_bar',
-         '/usr/src/app/spec/fixtures/nested_dirs/nested_foo_bar/.keep',
-         '/usr/src/app/spec/fixtures/nested_dirs/nested_foo_bar/foo_bar_no_ext']
+        ['.foo_bar',
+         'FooBar',
+         'FooBar/.keep',
+         'dir_foo_bar',
+         'dir_foo_bar/.keep',
+         'foo_bar',
+         'foo_bar.rb',
+         'foo_bar/.keep',
+         'foo_bar_dir',
+         'foo_bar_dir/.keep',
+         'foo_bar_empty_spec.rb',
+         'foo_bar_no_ext',
+         'nested_dirs',
+         'nested_dirs/foo_bar.rb',
+         'nested_dirs/nested_foo_bar',
+         'nested_dirs/nested_foo_bar/.keep',
+         'nested_dirs/nested_foo_bar/foo_bar_no_ext']
       end
 
       it 'renames directories and files' do
-        expect(fake_file_system).to eq pre_structure
+        expect(fixtures_dir_contents).to eq pre_structure
         run
-        expect(fake_file_system).to eq post_structure
+        expect(fixtures_dir_contents).to eq post_structure
       end
     end
   end
