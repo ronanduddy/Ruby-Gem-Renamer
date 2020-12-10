@@ -41,7 +41,7 @@ module RenameGem
       private
 
       def rename
-        replacement = replace(path.filename)
+        replacement = Modifier.new(name, new_name).replacement(path.filename)
         new_path = path.build(replacement).to_s
 
         unless path.to_s == new_path
@@ -53,12 +53,8 @@ module RenameGem
           @name = nil
           @new_name = nil
         end
-      rescue StringReplacer::NoMatchError => e
+      rescue Modifier::ReplacementNotFound => e
         puts "ignoring #{e.message}"
-      end
-
-      def replace(content)
-        StringReplacer.new(content).replace(name).with(new_name)
       end
     end
   end
