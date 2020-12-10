@@ -15,22 +15,20 @@ module RenameGem
 
       def change(modifier)
         temp_file = Tempfile.new(path.filename)
-        lines_changed = 0
 
         file.each_line do |line|
           temp_file.puts modifier.replacement(line)
-          lines_changed += 1
         rescue Modifier::ReplacementNotFound
           temp_file.puts line
         end
 
         temp_file.close
-        FileUtils.mv(temp_file.path, path.to_s) if lines_changed.positive?
+        FileUtils.mv(temp_file.path, path.to_s) if modifier.times_replaced.positive?
         temp_file.unlink
 
         possession.update(file)
 
-        puts "#{lines_changed} lines changed in #{path}"
+        puts "#{modifier.times_replaced} lines changed in #{path}"
       end
     end
   end

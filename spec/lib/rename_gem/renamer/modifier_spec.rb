@@ -53,7 +53,10 @@ RSpec.describe Renamer::Modifier do
     context 'when `from` is found' do
       let(:string) { 'hello_world' }
 
-      it { is_expected.to eq 'foo_bar' }
+      it 'changes the target and increments `times_replaced`' do
+        is_expected.to eq 'foo_bar'
+        expect(modifier.times_replaced).to eq 1
+      end
     end
   end
 end
