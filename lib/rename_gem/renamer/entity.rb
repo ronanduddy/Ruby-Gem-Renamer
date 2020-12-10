@@ -5,23 +5,24 @@ module RenameGem
     class Entity
       ChainError = Class.new(StandardError)
 
-      attr_reader :path, :file_handler, :name, :new_name
+      attr_reader :path, :file_handler, :modifier
 
       def initialize(path, file_handler)
         @path = Path.new(path)
         @file_handler = file_handler
+        @modifier = Modifier.new
       end
 
-      def change(name)
-        @name = name
+      def change(from)
+        modifier.from = from
 
         self
       end
 
-      def to(new_name)
-        raise ChainError, "Usage: object.change('x').to('y')" if name.nil? || new_name.nil?
+      def to(to)
+        modifier.to = to
 
-        @new_name = new_name
+        validate_chaining
 
         rename
       end
@@ -41,11 +42,11 @@ module RenameGem
       private
 
       def rename
-        replacement = Modifier.new(name, new_name).replacement(path.filename)
+        replacement = modifier.replacement(path.filename)
         new_path = path.build(replacement).to_s
 
         unless path.to_s == new_path
-          file_handler.change(Modifier.new(name, new_name)) if path.file?
+          file_handler.change(modifier) if path.file?
 
           path.rename(new_path)
           puts "rename #{path} to #{new_path}"
@@ -55,6 +56,10 @@ module RenameGem
         end
       rescue Modifier::ReplacementNotFound => e
         puts "ignoring #{e.message}"
+      end
+
+      def validate_chaining
+        raise ChainError, "Usage: object.change('x').to('y')" unless modifier.valid?
       end
     end
   end

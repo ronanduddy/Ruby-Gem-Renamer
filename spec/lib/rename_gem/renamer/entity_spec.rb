@@ -17,10 +17,10 @@ RSpec.describe Renamer::Entity do
     subject(:change) { entity.change(name) }
     let(:name) { 'hello_world' }
 
-    it 'returns self with `name` set for method chaining' do
-      expect(entity).to have_attributes(name: nil)
+    it 'returns self' do
+      expect(entity.modifier.from).to be nil
       expect(change).to be_instance_of described_class
-      expect(change).to have_attributes(name: 'hello_world')
+      expect(entity.modifier.from).to eq 'hello_world'
     end
   end
 
@@ -28,20 +28,12 @@ RSpec.describe Renamer::Entity do
     subject(:to) { entity.to(new_name) }
     let(:new_name) { 'foo_bar' }
 
-    context 'when `name` is unset' do
+    context 'when Entity#change not called first' do
       it { expect { to }.to raise_error(described_class::ChainError) }
     end
 
-    context 'when nil is used' do
-      let(:new_name) { nil }
-
-      it { expect { to }.to raise_error(described_class::ChainError) }
-    end
-
-    context 'with `name` set' do
-      before do
-        allow(entity).to receive(:name).and_return('hello_world')
-      end
+    context 'when Entity#change called first' do
+      before { entity.change('hello_world') }
 
       context 'when entity is a directory' do
         context 'a directory whose name is prefixed' do
