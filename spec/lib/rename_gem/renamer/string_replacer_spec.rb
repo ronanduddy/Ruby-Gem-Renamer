@@ -32,7 +32,7 @@ RSpec.describe Renamer::StringReplacer do
     context 'when `target` cannot be found in `content`' do
       before { allow(replacer).to receive(:target).and_return('beeblebrox') }
 
-      it { expect { with }.to raise_error(described_class::ContentNotFound) }
+      it { expect { with }.to raise_error(described_class::NoMatchError) }
     end
 
     context 'when `target` can be found in `content`' do

@@ -3,11 +3,8 @@
 module RenameGem
   module Renamer
     require 'tempfile'
-    require 'rename_gem/renamer/string_replacer'
 
     class FileHandler
-      # ChainError = Class.new(StandardError)
-
       attr_reader :path, :file
 
       def initialize(path)
@@ -16,7 +13,6 @@ module RenameGem
       end
 
       def change(modifier)
-        @modifier = modifier
         permissions = file.stat.mode
         uid = file.stat.uid
         gid = file.stat.gid
@@ -24,9 +20,9 @@ module RenameGem
         lines_changed = 0
 
         file.each_line do |line|
-          temp_file.puts replace(line)
+          temp_file.puts modifier.replacement(line)
           lines_changed += 1
-        rescue StringReplacer::ContentNotFound => e
+        rescue Modifier::ReplacementNotFound
           temp_file.puts line
         end
 
@@ -38,12 +34,6 @@ module RenameGem
         file.chown(uid, gid)
 
         puts "#{lines_changed} lines changed in #{path}"
-      end
-
-      private
-
-      def replace(content)
-        StringReplacer.new(content).replace(@modifier.from).with(@modifier.to)
       end
     end
   end

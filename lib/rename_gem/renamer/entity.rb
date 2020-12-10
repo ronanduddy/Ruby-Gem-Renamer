@@ -4,7 +4,6 @@ module RenameGem
   module Renamer
     class Entity
       ChainError = Class.new(StandardError)
-      Modifier = Struct.new(:from, :to)
 
       attr_reader :path, :file_handler, :name, :new_name
 
@@ -54,7 +53,7 @@ module RenameGem
           @name = nil
           @new_name = nil
         end
-      rescue StringReplacer::ContentNotFound => e
+      rescue StringReplacer::NoMatchError => e
         puts "ignoring #{e.message}"
       end
 

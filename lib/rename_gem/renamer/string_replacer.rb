@@ -4,7 +4,7 @@ module RenameGem
   module Renamer
     class StringReplacer
       ChainError = Class.new(StandardError)
-      ContentNotFound = Class.new(StandardError)
+      NoMatchError = Class.new(StandardError)
 
       attr_reader :content, :target
 
@@ -20,7 +20,7 @@ module RenameGem
 
       def with(replacement)
         raise ChainError, "Usage: replacer.replace('x').with('y')" if target.nil? || replacement.nil?
-        raise ContentNotFound, "#{target} not found in #{content}" unless exists?(target)
+        raise NoMatchError, "#{target} not found in #{content}" unless exists?(target)
 
         content.gsub(target, replacement).gsub(pascal_case(target), pascal_case(replacement))
       end
