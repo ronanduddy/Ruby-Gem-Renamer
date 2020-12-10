@@ -58,7 +58,7 @@ RSpec.describe Renamer::Entity do
       end
 
       context 'when entity is a file' do
-        let(:entity_path) { fixtures_file('hello_world.rb')}
+        let(:entity_path) { fixtures_file('hello_world.rb') }
         let(:file_path) { path.new(entity_path) }
         let(:stubbed_file_handler) { instance_double(file_handler, change: 'changed!') }
         let(:modifier) { Renamer::Entity::Modifier.new('hello_world', 'foo_bar') }
