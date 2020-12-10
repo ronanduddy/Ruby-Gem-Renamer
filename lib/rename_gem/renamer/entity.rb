@@ -4,11 +4,13 @@ module RenameGem
   module Renamer
     class Entity
       ChainError = Class.new(StandardError)
+      Modifier = Struct.new(:from, :to)
 
-      attr_reader :path, :name, :new_name
+      attr_reader :path, :file_handler, :name, :new_name
 
-      def initialize(path)
+      def initialize(path, file_handler)
         @path = Path.new(path)
+        @file_handler = file_handler
       end
 
       def change(name)
@@ -27,13 +29,13 @@ module RenameGem
 
       def directories
         path.directories.map do |directory_path|
-          self.class.new(directory_path.to_s)
+          self.class.new(directory_path.to_s, nil)
         end
       end
 
       def files
         path.files.map do |file_path|
-          self.class.new(file_path.to_s)
+          self.class.new(file_path.to_s, FileHandler.new(file_path))
         end
       end
 
@@ -44,7 +46,7 @@ module RenameGem
         new_path = path.build(replacement).to_s
 
         unless path.to_s == new_path
-          modify if path.file?
+          file_handler.change(Modifier.new(name, new_name)) if path.file?
 
           path.rename(new_path)
           puts "rename #{path} to #{new_path}"
@@ -54,33 +56,6 @@ module RenameGem
         end
       rescue StringReplacer::ContentNotFound => e
         puts "ignoring #{e.message}"
-      end
-
-      def modify
-        require 'tempfile'
-
-        file = File.new(path.to_s)
-        permissions = file.stat.mode
-        uid = file.stat.uid
-        gid = file.stat.gid
-        temp_file = Tempfile.new(path.filename)
-        lines_changed = 0
-
-        file.each_line do |line|
-          temp_file.puts replace(line)
-          lines_changed += 1
-        rescue StringReplacer::ContentNotFound => e
-          temp_file.puts line
-        end
-
-        temp_file.close
-        FileUtils.mv(temp_file.path, path.to_s) if lines_changed.positive?
-        temp_file.unlink
-
-        file.chmod(permissions)
-        file.chown(uid, gid)
-
-        puts "#{lines_changed} lines changed in #{path}"
       end
 
       def replace(content)

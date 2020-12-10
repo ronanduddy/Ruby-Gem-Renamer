@@ -11,10 +11,11 @@ module RenameGem
       end
 
       def run(path)
-        entity = Entity.new(path)
+        entity = Entity.new(path, nil)
 
         if entity.path.file?
-          entity.change(name).to(new_name)
+          file = Entity.new(path, FileHandler.new(entity.path))
+          file.change(name).to(new_name)
           return
         end
 

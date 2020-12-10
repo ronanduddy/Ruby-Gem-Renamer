@@ -23,6 +23,10 @@ module Helpers
     def fake_file_system
       Dir["#{fixtures_dir}/**/**"]
     end
+
+    def fixtures_file(file)
+      "#{fixtures_dir}/#{file}"
+    end
   end
 end
 

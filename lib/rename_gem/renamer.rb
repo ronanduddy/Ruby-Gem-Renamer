@@ -4,6 +4,7 @@ module RenameGem
   require 'rename_gem/renamer/traverser'
   require 'rename_gem/renamer/entity'
   require 'rename_gem/renamer/path'
+  require 'rename_gem/renamer/file_handler'
   require 'rename_gem/renamer/string_replacer'
 
   module Renamer

@@ -7,8 +7,11 @@ require 'support/matchers/directory'
 require 'support/matchers/file'
 
 RSpec.describe Renamer::Entity do
-  let(:entity) { described_class.new(entity_path) }
+  let(:entity) { described_class.new(entity_path, stubbed_file_handler) }
   let(:entity_path) { 'placeholder/to/path/' }
+  let(:file_handler) { Renamer::FileHandler }
+  let(:path) { Renamer::Path }
+  let(:stubbed_file_handler) { nil }
 
   describe '#change' do
     subject(:change) { entity.change(name) }
@@ -55,43 +58,16 @@ RSpec.describe Renamer::Entity do
       end
 
       context 'when entity is a file' do
-        let(:entity_path) { 'placeholder/to/path/hello_world.rb' }
-        let(:content) do
-          <<~STR
-            class HelloWorld
-              def print_hello_world
-                puts 'hello world'
-              end
-            end
-          STR
-        end
-        let(:expected_content) do
-          <<~STR
-            class FooBar
-              def print_foo_bar
-                puts 'hello world'
-              end
-            end
-          STR
-        end
+        let(:entity_path) { fixtures_file('hello_world.rb')}
+        let(:file_path) { path.new(entity_path) }
+        let(:stubbed_file_handler) { instance_double(file_handler, change: 'changed!') }
+        let(:modifier) { Renamer::Entity::Modifier.new('hello_world', 'foo_bar') }
 
-        context 'with an empty file having an extension' do
-          let(:content) { '' }
-          let(:expected_content) { '' }
+        include_context 'fake file system'
 
-          include_examples 'file changes', 'hello_world_empty_spec.rb', 'foo_bar_empty_spec.rb'
-        end
-
-        context 'with a populated file having an extension' do
-          include_examples 'file changes', 'hello_world.rb', 'foo_bar.rb'
-        end
-
-        context 'with a populated file having no extension' do
-          include_examples 'file changes', 'hello_world_no_ext', 'foo_bar_no_ext'
-        end
-
-        context 'with a populated dot/hidden file having no extension' do
-          include_examples 'file changes', '.hello_world', '.foo_bar'
+        it 'runs the file handler for that file' do
+          expect(stubbed_file_handler).to receive(:change).with(modifier)
+          to
         end
       end
     end
