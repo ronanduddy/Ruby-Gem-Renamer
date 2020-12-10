@@ -61,12 +61,11 @@ RSpec.describe Renamer::Entity do
         let(:entity_path) { fixtures_file('hello_world.rb') }
         let(:file_path) { path.new(entity_path) }
         let(:stubbed_file_handler) { instance_double(file_handler, change: 'changed!') }
-        let(:modifier) { Renamer::Entity::Modifier.new('hello_world', 'foo_bar') }
 
         include_context 'fake file system'
 
         it 'runs the file handler for that file' do
-          expect(stubbed_file_handler).to receive(:change).with(modifier)
+          expect(stubbed_file_handler).to receive(:change)
           to
         end
       end
