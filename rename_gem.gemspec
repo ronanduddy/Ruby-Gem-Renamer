@@ -18,7 +18,7 @@ Gem::Specification.new do |spec|
   spec.executables = ['rename_gem']
   spec.require_path = 'lib'
 
-  spec.required_ruby_version = '>= 3.0.0'
+  spec.required_ruby_version = '>= 2.7.2'
   spec.add_runtime_dependency 'thor', '~> 1.0', '>= 1.0.1'
 
   spec.add_development_dependency 'fakefs', '~> 1.2', '>= 1.2.3'
