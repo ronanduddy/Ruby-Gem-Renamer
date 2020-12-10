@@ -38,19 +38,19 @@ RSpec.describe Renamer::FileHandler do
 
       it 'changes the content of the file' do
         file = File.new(location)
+        mode = file.stat.mode
+        gid = file.stat.uid
+        uid = file.stat.gid
 
         expect(file.read).to eq content
-        expect(file.stat.mode).to eq 33_188
-        expect(file.stat.uid).to eq 0
-        expect(file.stat.gid).to eq 0
 
         change
 
         new_file = File.new(location)
         expect(new_file.read).to eq expected_content
-        expect(new_file.stat.mode).to eq 33_188
-        expect(file.stat.uid).to eq 0
-        expect(file.stat.gid).to eq 0
+        expect(new_file.stat.mode).to eq mode
+        expect(new_file.stat.uid).to eq gid
+        expect(new_file.stat.gid).to eq uid
       end
     end
   end
