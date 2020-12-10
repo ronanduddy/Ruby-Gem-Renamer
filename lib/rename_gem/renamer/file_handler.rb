@@ -5,17 +5,15 @@ module RenameGem
     require 'tempfile'
 
     class FileHandler
-      attr_reader :path, :file
+      attr_reader :path, :file, :possession
 
       def initialize(path)
         @path = path
         @file = File.new(path.to_s)
+        @possession = Possession.new(file)
       end
 
       def change(modifier)
-        permissions = file.stat.mode
-        uid = file.stat.uid
-        gid = file.stat.gid
         temp_file = Tempfile.new(path.filename)
         lines_changed = 0
 
@@ -30,8 +28,7 @@ module RenameGem
         FileUtils.mv(temp_file.path, path.to_s) if lines_changed.positive?
         temp_file.unlink
 
-        file.chmod(permissions)
-        file.chown(uid, gid)
+        possession.update(file)
 
         puts "#{lines_changed} lines changed in #{path}"
       end

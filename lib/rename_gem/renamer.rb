@@ -6,6 +6,7 @@ module RenameGem
   require 'rename_gem/renamer/path'
   require 'rename_gem/renamer/file_handler'
   require 'rename_gem/renamer/modifier'
+  require 'rename_gem/renamer/possession'
   require 'rename_gem/renamer/string_replacer'
 
   module Renamer
