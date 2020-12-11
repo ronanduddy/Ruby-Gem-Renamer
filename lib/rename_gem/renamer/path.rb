@@ -2,6 +2,8 @@
 
 module RenameGem
   module Renamer
+    require 'pathname'
+
     class Path
       RenameError = Class.new(StandardError)
 
