@@ -11,12 +11,17 @@ Gem::Specification.new do |spec|
   spec.homepage = 'https://github.com/ronanduddy/Ruby-Gem-Renamer'
   spec.license = 'MIT'
   spec.authors = ['Rónán Duddy']
-  spec.email = []
+  spec.email = ['dev@ronanduddy.xyz']
 
-  spec.files = ['lib/rename_gem.rb']
-  spec.bindir = 'bin'
-  spec.executables = ['rename_gem']
+  spec.files = Dir.chdir(File.expand_path(__dir__)) do
+    `git ls-files -z`.split("\x0").reject do |f|
+      f.match(%r{^(test|spec|features)/})
+    end
+  end
+
   spec.require_path = 'lib'
+  spec.bindir = 'bin'
+  spec.executables = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
 
   spec.required_ruby_version = '>= 2.7.2'
   spec.add_runtime_dependency 'thor', '~> 1.0', '>= 1.0.1'

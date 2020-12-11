@@ -46,7 +46,9 @@ RSpec.describe Renamer::StringReplacer do
     end
 
     context 'when `target` can be found multiple times in `content`' do
-      let(:content) { "class HelloWorldHelloWorld def print_hello_world_hello_world puts 'hello worldhello world' end end" }
+      let(:content) do
+        "class HelloWorldHelloWorld def print_hello_world_hello_world puts 'hello worldhello world' end end"
+      end
       let(:expected_content) { "class FooBarFooBar def print_foo_bar_foo_bar puts 'hello worldhello world' end end" }
 
       before { allow(replacer).to receive(:target).and_return('hello_world') }
