@@ -92,4 +92,7 @@ RSpec.configure do |config|
   config.define_derived_metadata do |meta|
     meta[:aggregate_failures] = true
   end
+
+  # ignore specs in the fixtures directory
+  config.exclude_pattern = 'spec/fixtures/**/*_spec.rb'
 end
