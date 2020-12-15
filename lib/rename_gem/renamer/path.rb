@@ -24,13 +24,13 @@ module RenameGem
       end
 
       def directories
-        @pathname.children.select(&:directory?).map do |pathname|
+        @pathname.children.select(&:directory?).sort.map do |pathname|
           self.class.new(pathname.to_s)
         end
       end
 
       def files
-        @pathname.children.select(&:file?).map do |pathname|
+        @pathname.children.select(&:file?).sort.map do |pathname|
           self.class.new(pathname.to_s)
         end
       end
