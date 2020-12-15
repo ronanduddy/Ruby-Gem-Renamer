@@ -15,7 +15,9 @@ RSpec.describe Renamer::DirectoryHandler do
 
     context 'with a directory' do
       let(:pre_structure) do
-        ['.hello_world',
+        [ '.git',
+          '.git/hello_world.rb',
+          '.hello_world',
          'HelloWorld',
          'HelloWorld/.keep',
          'dir_hello_world',
@@ -36,6 +38,8 @@ RSpec.describe Renamer::DirectoryHandler do
 
       let(:post_structure) do
         ['.foo_bar',
+          '.git',
+          '.git/hello_world.rb',
          'FooBar',
          'FooBar/.keep',
          'dir_foo_bar',
@@ -54,7 +58,7 @@ RSpec.describe Renamer::DirectoryHandler do
          'nested_dirs/nested_foo_bar/foo_bar_no_ext']
       end
 
-      it 'renames directories and files' do
+      it 'renames directories and files' do        
         expect(regular_fixtures_dir_contents).to eq pre_structure
         recurse!
         expect(regular_fixtures_dir_contents).to eq post_structure
