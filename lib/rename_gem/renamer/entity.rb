@@ -46,11 +46,10 @@ module RenameGem
         new_path = path.build(modifier.replacement(path.filename)).to_s
 
         path.rename(new_path)
-        puts "rename #{path} to #{new_path}"
 
         modifier = Modifier.new
       rescue Modifier::ReplacementNotFound => e
-        puts "not renamable: #{path}"
+        # nothing
       end
 
       def validate_chaining

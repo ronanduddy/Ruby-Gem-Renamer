@@ -44,6 +44,7 @@ module RenameGem
           raise RenameError, "#{self} must be a file or a directory"
         end
 
+        puts "Rename #{to_s} -> #{self.class.new(new_path).filename}"
         @pathname = Pathname.new(new_path)
       end
 
