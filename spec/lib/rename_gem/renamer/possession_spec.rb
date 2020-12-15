@@ -7,8 +7,8 @@ RSpec.describe Renamer::Possession do
 
   describe '#update' do
     subject(:update) { possession.update(other_file) }
-    let(:file) { File.new(fixtures_file('hello_world.rb')) }
-    let(:other_file) { File.new(fixtures_file('hello_world_no_ext')) }
+    let(:file) { File.new(regular_fixtures_file('hello_world.rb')) }
+    let(:other_file) { File.new(regular_fixtures_file('hello_world_no_ext')) }
 
     let(:stat_mock) { instance_double(File::Stat, mode: 1, uid: 2, gid: 3) }
 

@@ -5,8 +5,8 @@ require 'support/shared_context/fake_file_system'
 RSpec.shared_examples 'file changes' do |file_name, new_file_name|
   include_context 'fake file system'
 
-  let(:entity_path) { "#{fixtures_dir}/#{file_name}" }
-  let(:new_entity_path) { "#{fixtures_dir}/#{new_file_name}" }
+  let(:entity_path) { "#{regular_fixtures_dir}/#{file_name}" }
+  let(:new_entity_path) { "#{regular_fixtures_dir}/#{new_file_name}" }
 
   it 'changes file content and file name' do
     expect(File.read(entity_path)).to eq content

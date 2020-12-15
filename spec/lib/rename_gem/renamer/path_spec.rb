@@ -32,7 +32,7 @@ RSpec.describe Renamer::Path do
 
   describe '#directories' do
     subject(:directories) { path.directories }
-    let(:location) { fixtures_dir }
+    let(:location) { regular_fixtures_dir }
 
     include_context 'fake file system'
 
@@ -43,7 +43,7 @@ RSpec.describe Renamer::Path do
 
   describe '#files' do
     subject(:files) { path.files }
-    let(:location) { fixtures_dir }
+    let(:location) { regular_fixtures_dir }
 
     include_context 'fake file system'
 
@@ -58,8 +58,8 @@ RSpec.describe Renamer::Path do
     include_context 'fake file system'
 
     context 'when neither file nor directory' do
-      let(:location) { "#{fixtures_dir}/no_file" }
-      let(:new_name) { "#{fixtures_dir}/new_name" }
+      let(:location) { "#{regular_fixtures_dir}/no_file" }
+      let(:new_name) { "#{regular_fixtures_dir}/new_name" }
 
       it 'renames the file' do
         expect(File.exist?(location)).to be false
@@ -68,26 +68,26 @@ RSpec.describe Renamer::Path do
     end
 
     context 'when file' do
-      let(:location) { "#{fixtures_dir}/hello_world.rb" }
-      let(:new_name) { "#{fixtures_dir}/foo_bar.rb" }
+      let(:location) { regular_fixtures_file('hello_world.rb') }
+      let(:new_name) { regular_fixtures_file('foo_bar.rb') }
 
       it 'renames the file' do
         expect(File.exist?(location)).to be true
         rename
         expect(File.exist?(location)).to be false
-        expect(File.exist?("#{fixtures_dir}/foo_bar.rb")).to be true
+        expect(File.exist?(regular_fixtures_file('foo_bar.rb'))).to be true
       end
     end
 
     context 'when directory' do
-      let(:location) { "#{fixtures_dir}/hello_world" }
-      let(:new_name) { "#{fixtures_dir}/foo_bar" }
+      let(:location) { regular_fixtures_file('hello_world') }
+      let(:new_name) { regular_fixtures_file('foo_bar') }
 
       it 'renames the file' do
         expect(Dir.exist?(location)).to be true
         rename
         expect(Dir.exist?(location)).to be false
-        expect(Dir.exist?("#{fixtures_dir}/foo_bar")).to be true
+        expect(Dir.exist?(regular_fixtures_file('foo_bar'))).to be true
       end
     end
   end
@@ -98,13 +98,13 @@ RSpec.describe Renamer::Path do
     include_context 'fake file system'
 
     context 'when file' do
-      let(:location) { "#{fixtures_dir}/hello_world.rb" }
+      let(:location) { "#{regular_fixtures_dir}/hello_world.rb" }
 
       it { is_expected.to be true }
     end
 
     context 'when directory' do
-      let(:location) { "#{fixtures_dir}/hello_world_dir" }
+      let(:location) { "#{regular_fixtures_dir}/hello_world_dir" }
 
       it { is_expected.to be false }
     end
@@ -116,13 +116,13 @@ RSpec.describe Renamer::Path do
     include_context 'fake file system'
 
     context 'when file' do
-      let(:location) { "#{fixtures_dir}/hello_world.rb" }
+      let(:location) { "#{regular_fixtures_dir}/hello_world.rb" }
 
       it { is_expected.to be false }
     end
 
     context 'when directory' do
-      let(:location) { "#{fixtures_dir}/hello_world_dir" }
+      let(:location) { "#{regular_fixtures_dir}/hello_world_dir" }
 
       it { is_expected.to be true }
     end

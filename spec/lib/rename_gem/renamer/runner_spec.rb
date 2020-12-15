@@ -10,12 +10,12 @@ RSpec.describe Renamer::Runner do
   describe '#run' do
     subject(:run) { runner.run(entity) }
     let(:entity) { Renamer::Entity.new(path, nil) }
-    let(:path) { fixtures_dir }
+    let(:path) { regular_fixtures_dir }
 
     include_context 'fake file system'
 
     context 'when a file' do
-      let(:path) { fixtures_file('hello_world.rb') }
+      let(:path) { regular_fixtures_file('hello_world.rb') }
       let(:entity_mock) { instance_double(Renamer::Entity) }
 
       before do

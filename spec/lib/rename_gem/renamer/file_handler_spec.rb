@@ -9,7 +9,7 @@ RSpec.describe Renamer::FileHandler do
 
   describe '#change' do
     subject(:change) { file_handler.change(modifier) }
-    let(:location) { fixtures_file('hello_world.rb') }
+    let(:location) { regular_fixtures_file('hello_world.rb') }
 
     include_context 'fake file system'
 

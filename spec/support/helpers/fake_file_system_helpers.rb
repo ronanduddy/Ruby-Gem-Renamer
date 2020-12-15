@@ -10,24 +10,28 @@ module Helpers
       "#{@@default_path}/fixtures"
     end
 
+    def regular_fixtures_dir
+      "#{fixtures_dir}/regular"
+    end
+
+    def regular_fixtures_dir_contents
+      Dir["#{regular_fixtures_dir}/**/**"].map do |path|
+        path.gsub("#{regular_fixtures_dir}/", '')
+      end
+    end
+
+    def regular_fixtures_file(file)
+      "#{regular_fixtures_dir}/#{file}"
+    end
+
     def activate_fakefs
       FakeFS.activate!
-      FakeFS::FileSystem.clone(fixtures_dir)
+      FakeFS::FileSystem.clone(regular_fixtures_dir)
     end
 
     def deactivate_fakefs
       FakeFS.deactivate!
       FakeFS.clear!
-    end
-
-    def fixtures_dir_contents
-      Dir["#{fixtures_dir}/**/**"].map do |path|
-        path.gsub("#{fixtures_dir}/", '')
-      end
-    end
-
-    def fixtures_file(file)
-      "#{fixtures_dir}/#{file}"
     end
   end
 end

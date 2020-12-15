@@ -9,7 +9,7 @@ RSpec.describe Renamer::DirectoryHandler do
 
   describe '#recurse!' do
     subject(:recurse!) { directory_handler.recurse!(entity) }
-    let(:entity) { Renamer::Entity.new(fixtures_dir, nil) }
+    let(:entity) { Renamer::Entity.new(regular_fixtures_dir, nil) }
 
     include_context 'fake file system'
 
@@ -55,9 +55,9 @@ RSpec.describe Renamer::DirectoryHandler do
       end
 
       it 'renames directories and files' do
-        expect(fixtures_dir_contents).to eq pre_structure
+        expect(regular_fixtures_dir_contents).to eq pre_structure
         recurse!
-        expect(fixtures_dir_contents).to eq post_structure
+        expect(regular_fixtures_dir_contents).to eq post_structure
       end
     end
   end

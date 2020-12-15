@@ -50,7 +50,7 @@ RSpec.describe Renamer::Entity do
       end
 
       context 'when entity is a file' do
-        let(:entity_path) { fixtures_file('hello_world.rb') }
+        let(:entity_path) { regular_fixtures_file('hello_world.rb') }
         let(:file_path) { path.new(entity_path) }
         let(:stubbed_file_handler) { instance_double(file_handler, change: 'changed!') }
 
@@ -66,7 +66,7 @@ RSpec.describe Renamer::Entity do
 
   describe '#directories' do
     subject(:directories) { entity.directories }
-    let(:entity_path) { fixtures_dir }
+    let(:entity_path) { regular_fixtures_dir }
 
     include_context 'fake file system'
 
@@ -77,7 +77,7 @@ RSpec.describe Renamer::Entity do
 
   describe '#files' do
     subject(:files) { entity.files }
-    let(:entity_path) { fixtures_dir }
+    let(:entity_path) { regular_fixtures_dir }
 
     include_context 'fake file system'
 
