@@ -24,9 +24,19 @@ module Helpers
       "#{regular_fixtures_dir}/#{file}"
     end
 
-    def activate_fakefs
+    def test_gem_fixtures_dir
+      "#{fixtures_dir}/test_gem"
+    end
+
+    def test_gem_fixtures_dir_contents
+      Dir["#{test_gem_fixtures_dir}/**/**"].reject { |i| i =~ /.git\/?.*/ }.map do |path|
+        path.gsub("#{test_gem_fixtures_dir}/", '')
+      end
+    end
+
+    def activate_fakefs(dir=nil)
       FakeFS.activate!
-      FakeFS::FileSystem.clone(regular_fixtures_dir)
+      FakeFS::FileSystem.clone(dir || regular_fixtures_dir)
     end
 
     def deactivate_fakefs
