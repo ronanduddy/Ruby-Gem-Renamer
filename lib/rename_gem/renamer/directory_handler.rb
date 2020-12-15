@@ -3,7 +3,7 @@
 module RenameGem
   module Renamer
     class DirectoryHandler
-      EXCLUDED_DIRS = [ '.git' ]
+      EXCLUDED_DIRS = ['.git'].freeze
 
       attr_reader :name, :new_name
 

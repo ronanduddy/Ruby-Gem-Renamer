@@ -30,9 +30,9 @@ RSpec.describe CLI do
 
   describe '.start', :fakefs do
     subject(:start) { RenameGem::CLI.start(argv) }
-    let(:argv) {["rename", "-f", from, "-t", to, "-p", path]}
+    let(:argv) { ['rename', '-f', from, '-t', to, '-p', path] }
     let(:from) { 'project_name' }
-    let(:to) { 'foo_bar'}
+    let(:to) { 'foo_bar' }
     let(:path) { test_gem_fixtures_dir }
 
     before { activate_fakefs(test_gem_fixtures_dir) }
