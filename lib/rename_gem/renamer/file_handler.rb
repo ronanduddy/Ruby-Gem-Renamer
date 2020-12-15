@@ -25,10 +25,14 @@ module RenameGem
         end
 
         temp_file.close
-        FileUtils.mv(temp_file.path, path.to_s) if @changes
-        temp_file.unlink
 
-        possession.update(file)
+        if @changes
+          FileUtils.mv(temp_file.path, path.to_s)
+          possession.update(file)
+          puts "Edit #{path.to_s}"
+        end
+
+        temp_file.unlink
       end
     end
   end

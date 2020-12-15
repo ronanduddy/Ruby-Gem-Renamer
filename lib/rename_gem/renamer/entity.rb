@@ -24,6 +24,7 @@ module RenameGem
 
         validate_chaining
 
+        file_handler.change(modifier) if path.file?
         rename
       end
 
@@ -44,16 +45,12 @@ module RenameGem
       def rename
         new_path = path.build(modifier.replacement(path.filename)).to_s
 
-        unless path.to_s == new_path
-          file_handler.change(modifier) if path.file?
+        path.rename(new_path)
+        puts "rename #{path} to #{new_path}"
 
-          path.rename(new_path)
-          puts "rename #{path} to #{new_path}"
-
-          modifier = Modifier.new
-        end
+        modifier = Modifier.new
       rescue Modifier::ReplacementNotFound => e
-        puts "ignoring #{e.message}"
+        puts "not renamable: #{path}"
       end
 
       def validate_chaining
