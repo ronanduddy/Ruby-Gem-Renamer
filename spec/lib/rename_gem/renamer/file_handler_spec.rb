@@ -43,6 +43,7 @@ RSpec.describe Renamer::FileHandler do
         uid = file.stat.gid
 
         expect(file.read).to eq content
+        expect(file_handler.changes).to eq false
 
         change
 
@@ -51,6 +52,7 @@ RSpec.describe Renamer::FileHandler do
         expect(new_file.stat.mode).to eq mode
         expect(new_file.stat.uid).to eq gid
         expect(new_file.stat.gid).to eq uid
+        expect(file_handler.changes).to eq true
       end
     end
   end

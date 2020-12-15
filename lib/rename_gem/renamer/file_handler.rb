@@ -5,12 +5,13 @@ module RenameGem
     require 'tempfile'
 
     class FileHandler
-      attr_reader :path, :file, :possession
+      attr_reader :path, :file, :possession, :changes
 
       def initialize(path)
         @path = path
         @file = File.new(path.to_s)
         @possession = Possession.new(file)
+        @changes = false
       end
 
       def change(modifier)
@@ -18,17 +19,16 @@ module RenameGem
 
         file.each_line do |line|
           temp_file.puts modifier.replacement(line)
+          @changes = true
         rescue Modifier::ReplacementNotFound
           temp_file.puts line
         end
 
         temp_file.close
-        FileUtils.mv(temp_file.path, path.to_s) if modifier.times_replaced.positive?
+        FileUtils.mv(temp_file.path, path.to_s) if @changes
         temp_file.unlink
 
         possession.update(file)
-
-        puts "#{modifier.times_replaced} lines changed in #{path}"
       end
     end
   end

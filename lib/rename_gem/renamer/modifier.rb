@@ -6,12 +6,10 @@ module RenameGem
       ReplacementNotFound = Class.new(StandardError)
 
       attr_accessor :from, :to
-      attr_reader :times_replaced
 
       def initialize(from = nil, to = nil)
         @from = from
         @to = to
-        @times_replaced = 0
       end
 
       def valid?
@@ -22,10 +20,8 @@ module RenameGem
 
       def replacement(string)
         replacer = StringReplacer.new(string)
-        content = replacer.replace(from).with(to)
-        @times_replaced += 1
 
-        content
+        replacer.replace(from).with(to)
       rescue StringReplacer::NoMatchError => e
         raise ReplacementNotFound, e.message
       end
