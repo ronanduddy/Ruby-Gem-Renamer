@@ -1,17 +1,16 @@
 # frozen_string_literal: true
 
 require 'support/shared_context/fake_file_system'
-require 'support/shared_examples/directory'
-require 'support/shared_examples/file'
 require 'support/matchers/directory'
 require 'support/matchers/file'
 
 RSpec.describe Renamer::Entity do
-  let(:entity) { described_class.new(entity_path, stubbed_file_handler) }
-  let(:entity_path) { 'placeholder/to/path/' }
-  let(:file_handler) { Renamer::FileHandler }
+  let(:entity) { described_class.new(entity_path) }
+  let(:entity_path) { regular_fixtures_dir }
   let(:path) { Renamer::Path }
   let(:stubbed_file_handler) { nil }
+
+  include_context 'fake file system'
 
   describe '#change' do
     subject(:change) { entity.change(name) }
@@ -37,24 +36,51 @@ RSpec.describe Renamer::Entity do
 
       context 'when entity is a directory' do
         context 'a directory whose name is prefixed' do
-          include_examples 'directory changes', 'dir_hello_world', 'dir_foo_bar'
+          let(:entity_path) { "#{regular_fixtures_dir}/dir_hello_world" }
+          let(:new_entity_path) { "#{regular_fixtures_dir}/dir_foo_bar" }
+
+          it 'changes directory name' do
+            expect(Dir.exist?(entity_path)).to be true
+            to
+            expect(Dir.exist?(entity_path)).to be false
+            expect(Dir.exist?(new_entity_path)).to be true
+          end
         end
 
         context 'a directory whose name is postfixed' do
-          include_examples 'directory changes', 'hello_world_dir', 'foo_bar_dir'
+          let(:entity_path) { "#{regular_fixtures_dir}/hello_world_dir" }
+          let(:new_entity_path) { "#{regular_fixtures_dir}/foo_bar_dir" }
+
+          it 'changes directory name' do
+            expect(Dir.exist?(entity_path)).to be true
+            to
+            expect(Dir.exist?(entity_path)).to be false
+            expect(Dir.exist?(new_entity_path)).to be true
+          end
         end
 
         context 'a directory whose name is in pascal case' do
-          include_examples 'directory changes', 'HelloWorld', 'FooBar'
+          let(:entity_path) { "#{regular_fixtures_dir}/HelloWorld" }
+          let(:new_entity_path) { "#{regular_fixtures_dir}/FooBar" }
+
+          it 'changes directory name' do
+            expect(Dir.exist?(entity_path)).to be true
+            to
+            expect(Dir.exist?(entity_path)).to be false
+            expect(Dir.exist?(new_entity_path)).to be true
+          end
         end
       end
 
       context 'when entity is a file' do
         let(:entity_path) { regular_fixtures_file('hello_world.rb') }
-        let(:file_path) { path.new(entity_path) }
-        let(:stubbed_file_handler) { instance_double(file_handler, change: 'changed!') }
+        let(:stubbed_file_handler) do
+          instance_double(Renamer::FileHandler, change: 'changed!')
+        end
 
-        include_context 'fake file system'
+        before do
+          allow(entity).to receive(:file_handler).and_return(stubbed_file_handler)
+        end
 
         it 'runs the file handler for that file' do
           expect(stubbed_file_handler).to receive(:change)
@@ -68,8 +94,6 @@ RSpec.describe Renamer::Entity do
     subject(:directories) { entity.directories }
     let(:entity_path) { regular_fixtures_dir }
 
-    include_context 'fake file system'
-
     it 'produces a list of directories' do
       directories.each { |dir| expect(dir).to be_a_directory }
     end
@@ -78,8 +102,6 @@ RSpec.describe Renamer::Entity do
   describe '#files' do
     subject(:files) { entity.files }
     let(:entity_path) { regular_fixtures_dir }
-
-    include_context 'fake file system'
 
     it 'produces a list of files' do
       files.each { |file| expect(file).to be_a_file }

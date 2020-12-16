@@ -7,9 +7,9 @@ module RenameGem
 
       attr_reader :path, :file_handler, :modifier
 
-      def initialize(path, file_handler)
+      def initialize(path)
         @path = Path.new(path)
-        @file_handler = file_handler
+        @file_handler = FileHandler.new(@path)
         @modifier = Modifier.new
       end
 
@@ -30,13 +30,13 @@ module RenameGem
 
       def directories
         path.directories.map do |directory_path|
-          self.class.new(directory_path.to_s, nil)
+          self.class.new(directory_path.to_s)
         end
       end
 
       def files
         path.files.map do |file_path|
-          self.class.new(file_path.to_s, FileHandler.new(file_path))
+          self.class.new(file_path.to_s)
         end
       end
 
