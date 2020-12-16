@@ -8,7 +8,6 @@ RSpec.describe Renamer::Entity do
   let(:entity) { described_class.new(path) }
   let(:path) { regular_fixtures_dir }
 
-
   describe '#change' do
     subject(:change) { entity.change(name) }
     let(:name) { 'hello_world' }

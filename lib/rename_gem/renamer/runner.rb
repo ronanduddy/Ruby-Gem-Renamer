@@ -3,21 +3,21 @@
 module RenameGem
   module Renamer
     class Runner
-      attr_reader :name, :new_name
+      attr_reader :context
 
-      def initialize(name, new_name)
-        @name = name
-        @new_name = new_name
+      def initialize(context)
+        @context = context
       end
 
-      def run(entity)
+      def run
+        entity = Entity.new(context.full_path)
+
         if entity.path.file?
-          file = Entity.new(entity.to_s, FileHandler.new(entity.path))
-          file.change(name).to(new_name)
+          entity.change(context.from).to(context.to)
           return
         end
 
-        DirectoryHandler.new(name, new_name).recurse!(entity)
+        DirectoryHandler.new(context.from, context.to).recurse!(entity)
       end
     end
   end
