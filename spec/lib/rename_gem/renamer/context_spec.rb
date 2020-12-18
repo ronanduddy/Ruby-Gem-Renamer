@@ -7,9 +7,15 @@ RSpec.describe Renamer::Context do
   let(:from) { 'hello_world' }
   let(:to) { 'foo_bar' }
 
-  describe '#full_path' do
-    subject(:full_path) { context.full_path }
+  describe '#absolute_path' do
+    subject(:absolute_path) { context.absolute_path }
 
     it { is_expected.to eq '/src/app/this/directory' }
+  end
+
+  describe '#as' do
+    subject(:as) { context.as('this/other/directory') }
+
+    it { expect(as.path).to eq 'this/other/directory' }
   end
 end

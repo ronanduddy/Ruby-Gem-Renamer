@@ -12,8 +12,12 @@ module RenameGem
         @to = to
       end
 
-      def full_path
+      def absolute_path
         Pathname.new(pwd).join(path).to_s
+      end
+
+      def as(new_path)
+        self.class.new(pwd, new_path, from, to)
       end
     end
   end

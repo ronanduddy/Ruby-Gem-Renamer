@@ -10,11 +10,11 @@ RSpec.describe Renamer do
         path: 'spec/fixtures/hello_world.rb'
       }
     end
-    let(:entity) { instance_double(described_class::Entity, change: 'chnaged!') }
+    let(:mocked_runner) { instance_double(described_class::Runner, run: 'runned') }
 
-    it 'executes the traverser' do
-      expect(described_class::Entity).to receive(:new).and_return(entity)
-      expect(run).to eq 'chnaged!'
+    it 'executes the runner' do
+      expect(described_class::Runner).to receive(:new).and_return(mocked_runner)
+      expect(run).to eq 'runned'
     end
   end
 end

@@ -3,29 +3,39 @@
 module RenameGem
   module Renamer
     class DirectoryHandler
-      EXCLUDED_DIRS = ['.git'].freeze
+      attr_reader :context, :path
 
-      attr_reader :name, :new_name
-
-      def initialize(name, new_name)
-        @name = name
-        @new_name = new_name
+      def initialize(context)
+        @context = context
+        @path = Path.new(context.absolute_path)
       end
 
-      def recurse!(directory)
-        directory.files.each(&:change) unless excluded_directory?(directory)
+      def change_files
+        path.files.each do |file_path|
+          file_handler = FileHandler.new(file_path)
+          file_handler.edit(context.from, context.to)
+          file_handler.rename(context.from, context.to)
+        end
+      end
 
-        directory.directories.each do |sub_directory|
-          sub_directory.change
+      def rename
+        new_path = path.build(replacement(path.filename)).to_s
+        path.rename(new_path)
+      rescue StringReplacer::NoMatchError
+        # ignore
+      end
 
-          recurse!(sub_directory) unless excluded_directory?(sub_directory)
+      def directories
+        path.directories.map do |directory_path|
+          self.class.new(context.as(directory_path.to_s))
         end
       end
 
       private
 
-      def excluded_directory?(dir)
-        EXCLUDED_DIRS.include? dir.path.filename
+      def replacement(text)
+        replacer = StringReplacer.new(text)
+        replacer.replace(context.from).with(context.to)
       end
     end
   end

@@ -3,66 +3,61 @@
 require 'support/shared_context/fake_file_system'
 
 RSpec.describe Renamer::DirectoryHandler do
-  let(:directory_handler) { described_class.new(name, new_name) }
-  let(:name) { 'hello_world' }
-  let(:new_name) { 'foo_bar' }
+  let(:directory_handler) { described_class.new(context) }
+  let(:context) { Renamer::Context.new('/', path, from, to) }
+  let(:path) { regular_fixtures_dir }
+  let(:from) { 'hello_world' }
+  let(:to) { 'foo_bar' }
 
-  describe '#recurse!' do
-    subject(:recurse!) { directory_handler.recurse!(entity) }
-    let(:entity) { Renamer::Entity.new(context) }
-    let(:context) { Renamer::Context.new('/', regular_fixtures_dir, name, new_name) }
+  include_context 'fake file system'
 
-    include_context 'fake file system'
+  describe '#change_files' do
+    subject(:change_files) { directory_handler.change_files }
+    let(:mocked_file_handler) do
+      instance_double(
+        Renamer::FileHandler,
+        edit: 'edited',
+        rename: 'renamed'
+      )
+    end
 
-    context 'with a directory' do
-      let(:pre_structure) do
-        ['.git',
-         '.git/hello_world.rb',
-         '.hello_world',
-         'HelloWorld',
-         'HelloWorld/.keep',
-         'dir_hello_world',
-         'dir_hello_world/.keep',
-         'hello_world',
-         'hello_world.rb',
-         'hello_world/.keep',
-         'hello_world_dir',
-         'hello_world_dir/.keep',
-         'hello_world_empty_spec.rb',
-         'hello_world_no_ext',
-         'nested_dirs',
-         'nested_dirs/hello_world.rb',
-         'nested_dirs/nested_hello_world',
-         'nested_dirs/nested_hello_world/.keep',
-         'nested_dirs/nested_hello_world/hello_world_no_ext']
-      end
+    it 'executes the file handler' do
+      expect(Renamer::FileHandler).to receive(:new)
+        .exactly(4).times
+        .and_return(mocked_file_handler)
+      expect(mocked_file_handler).to receive(:edit).and_return('edited')
+      change_files
+    end
+  end
 
-      let(:post_structure) do
-        ['.foo_bar',
-         '.git',
-         '.git/hello_world.rb',
-         'FooBar',
-         'FooBar/.keep',
-         'dir_foo_bar',
-         'dir_foo_bar/.keep',
-         'foo_bar',
-         'foo_bar.rb',
-         'foo_bar/.keep',
-         'foo_bar_dir',
-         'foo_bar_dir/.keep',
-         'foo_bar_empty_spec.rb',
-         'foo_bar_no_ext',
-         'nested_dirs',
-         'nested_dirs/foo_bar.rb',
-         'nested_dirs/nested_foo_bar',
-         'nested_dirs/nested_foo_bar/.keep',
-         'nested_dirs/nested_foo_bar/foo_bar_no_ext']
-      end
+  describe '#rename' do
+    subject(:rename) { directory_handler.rename }
+    let(:mocked_path) do
+      instance_double(
+        Renamer::Path,
+        filename: 'hello_world.rb',
+        rename: 'renamed'
+      )
+    end
 
-      it 'renames directories and files' do
-        expect(regular_fixtures_dir_contents).to eq pre_structure
-        recurse!
-        expect(regular_fixtures_dir_contents).to eq post_structure
+    before do
+      allow(mocked_path).to receive(:build)
+    end
+
+    it 'executes rename' do
+      expect(Renamer::Path).to receive(:new).and_return(mocked_path)
+      expect(mocked_path).to receive(:rename).and_return('renamed')
+      rename
+    end
+  end
+
+  describe '#directories' do
+    subject(:directories) { directory_handler.directories }
+
+    it 'lists a list of directories' do
+      directories.each do |dir|
+        presence = Dir.exist?(dir.path.to_s)
+        expect(presence).to be true
       end
     end
   end

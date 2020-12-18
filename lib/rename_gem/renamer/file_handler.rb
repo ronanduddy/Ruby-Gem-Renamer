@@ -14,13 +14,13 @@ module RenameGem
         @changes = false
       end
 
-      def change(modifier)
+      def edit(from, to)
         temp_file = Tempfile.new(path.filename)
 
         file.each_line do |line|
-          temp_file.puts modifier.replacement(line)
+          temp_file.puts replacement(line, from, to)
           @changes = true
-        rescue Modifier::ReplacementNotFound
+        rescue StringReplacer::NoMatchError
           temp_file.puts line
         end
 
@@ -33,6 +33,21 @@ module RenameGem
         end
 
         temp_file.unlink
+      end
+
+      def rename(from, to)
+        new_filename = replacement(path.filename, from, to)
+        new_path = path.build(new_filename).to_s
+        path.rename(new_path)
+      rescue StringReplacer::NoMatchError
+        # ignore
+      end
+
+      private
+
+      def replacement(text, from, to)
+        replacer = StringReplacer.new(text)
+        replacer.replace(from).with(to)
       end
     end
   end
