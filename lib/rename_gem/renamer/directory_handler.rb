@@ -13,10 +13,10 @@ module RenameGem
       end
 
       def recurse!(directory)
-        directory.files.each { |file| file.change(name).to(new_name) }
+        directory.files.each { |file| file.change } unless excluded_directory?(directory)
 
         directory.directories.each do |sub_directory|
-          sub_directory.change(name).to(new_name)
+          sub_directory.change
 
           recurse!(sub_directory) unless excluded_directory?(sub_directory)
         end

@@ -3,57 +3,44 @@
 module RenameGem
   module Renamer
     class Entity
-      ChainError = Class.new(StandardError)
+      attr_reader :context, :path, :modifier
 
-      attr_reader :path, :file_handler, :modifier
-
-      def initialize(path)
-        @path = Path.new(path)
-        @file_handler = FileHandler.new(@path)
-        @modifier = Modifier.new
+      def initialize(context)
+        @context = context
+        @path = Path.new(context.full_path)
+        @modifier = Modifier.new(context.from, context.to)
       end
 
-      def change(from)
-        modifier.from = from
+      def change        
+        if path.file?
+          FileHandler.new(path).change(modifier)
+        elsif path.directory?
+          DirectoryHandler.new(context.from, context.to).recurse!(self)
+        end
 
-        self
-      end
+        new_path = path.build(modifier.replacement(path.filename)).to_s
 
-      def to(to)
-        modifier.to = to
-
-        validate_chaining
-
-        file_handler.change(modifier) if path.file?
-        rename
+        path.rename(new_path)
+      rescue Modifier::ReplacementNotFound => e
+        # nothing
       end
 
       def directories
         path.directories.map do |directory_path|
-          self.class.new(directory_path.to_s)
+          self.class.new(new_context(directory_path))
         end
       end
 
       def files
         path.files.map do |file_path|
-          self.class.new(file_path.to_s)
+          self.class.new(new_context(file_path))
         end
       end
 
       private
 
-      def rename
-        new_path = path.build(modifier.replacement(path.filename)).to_s
-
-        path.rename(new_path)
-
-        modifier = Modifier.new
-      rescue Modifier::ReplacementNotFound => e
-        # nothing
-      end
-
-      def validate_chaining
-        raise ChainError, "Usage: object.change('x').to('y')" unless modifier.valid?
+      def new_context(new_path)
+        Context.new(context.pwd, new_path.to_s, context.from, context.to)
       end
     end
   end
