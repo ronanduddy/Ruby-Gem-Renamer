@@ -11,7 +11,7 @@ module RenameGem
         @modifier = Modifier.new(context.from, context.to)
       end
 
-      def change        
+      def change
         if path.file?
           FileHandler.new(path).change(modifier)
         elsif path.directory?

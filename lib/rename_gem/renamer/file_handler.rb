@@ -28,7 +28,7 @@ module RenameGem
 
         if @changes
           FileUtils.mv(temp_file.path, path.to_s)
-          possession.update(file)          
+          possession.update(file)
           puts "Edit #{path}"
         end
 
