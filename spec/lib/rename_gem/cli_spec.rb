@@ -40,19 +40,19 @@ RSpec.describe CLI do
 
     let(:results) do
       <<~STR
+        Edit /usr/src/app/spec/fixtures/test_gem/bin/console
+        Edit /usr/src/app/spec/fixtures/test_gem/exe/project_name
+        Rename /usr/src/app/spec/fixtures/test_gem/exe/project_name -> foo_bar
+        Edit /usr/src/app/spec/fixtures/test_gem/lib/project_name/version.rb
+        Rename /usr/src/app/spec/fixtures/test_gem/lib/project_name -> foo_bar
+        Edit /usr/src/app/spec/fixtures/test_gem/lib/project_name.rb
+        Rename /usr/src/app/spec/fixtures/test_gem/lib/project_name.rb -> foo_bar.rb
+        Rename /usr/src/app/spec/fixtures/test_gem/spec/support/lib/project_name -> foo_bar
+        Edit /usr/src/app/spec/fixtures/test_gem/spec/spec_helper.rb
         Edit /usr/src/app/spec/fixtures/test_gem/README.md
         Edit /usr/src/app/spec/fixtures/test_gem/docker-compose.yml
         Edit /usr/src/app/spec/fixtures/test_gem/project_name.gemspec
         Rename /usr/src/app/spec/fixtures/test_gem/project_name.gemspec -> foo_bar.gemspec
-        Edit /usr/src/app/spec/fixtures/test_gem/bin/console
-        Edit /usr/src/app/spec/fixtures/test_gem/exe/project_name
-        Rename /usr/src/app/spec/fixtures/test_gem/exe/project_name -> foo_bar
-        Edit /usr/src/app/spec/fixtures/test_gem/lib/project_name.rb
-        Rename /usr/src/app/spec/fixtures/test_gem/lib/project_name.rb -> foo_bar.rb
-        Edit /usr/src/app/spec/fixtures/test_gem/lib/project_name/version.rb
-        Rename /usr/src/app/spec/fixtures/test_gem/lib/project_name -> foo_bar
-        Edit /usr/src/app/spec/fixtures/test_gem/spec/spec_helper.rb
-        Rename /usr/src/app/spec/fixtures/test_gem/spec/support/lib/project_name -> foo_bar
       STR
     end
 

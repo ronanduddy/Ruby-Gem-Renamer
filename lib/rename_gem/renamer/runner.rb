@@ -5,10 +5,11 @@ module RenameGem
     class Runner
       EXCLUDED_DIRS = ['.git'].freeze
 
-      attr_reader :options
+      attr_reader :options, :reporter
 
       def initialize(options)
         @options = options
+        @reporter = Reporter.new
       end
 
       def run
@@ -17,7 +18,7 @@ module RenameGem
 
         recurse!(directory)
 
-        # puts context.results
+        reporter.print
       end
 
       private
@@ -30,6 +31,8 @@ module RenameGem
 
           sub_directory.rename unless excluded_directory?(sub_directory.path)
         end
+
+        reporter << directory.results
       end
 
       def excluded_directory?(path)
