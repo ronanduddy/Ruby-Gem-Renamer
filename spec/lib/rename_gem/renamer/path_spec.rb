@@ -57,13 +57,13 @@ RSpec.describe Renamer::Path do
 
     include_context 'fake file system'
 
-    context 'when neither file nor directory' do
-      let(:location) { "#{regular_fixtures_dir}/no_file" }
-      let(:new_name) { "#{regular_fixtures_dir}/new_name" }
+    context 'when non-existant' do
+      let(:location) { regular_fixtures_file('nowhere') }
+      let(:new_name) { regular_fixtures_file('foo_bar.rb') }
 
       it 'renames the file' do
         expect(File.exist?(location)).to be false
-        expect { rename }.to raise_error(described_class::RenameError)
+        expect(rename).to be false
       end
     end
 
@@ -73,7 +73,7 @@ RSpec.describe Renamer::Path do
 
       it 'renames the file' do
         expect(File.exist?(location)).to be true
-        rename
+        expect(rename).to be true
         expect(File.exist?(location)).to be false
         expect(File.exist?(regular_fixtures_file('foo_bar.rb'))).to be true
       end
@@ -85,7 +85,7 @@ RSpec.describe Renamer::Path do
 
       it 'renames the file' do
         expect(Dir.exist?(location)).to be true
-        rename
+        expect(rename).to be true
         expect(Dir.exist?(location)).to be false
         expect(Dir.exist?(regular_fixtures_file('foo_bar'))).to be true
       end

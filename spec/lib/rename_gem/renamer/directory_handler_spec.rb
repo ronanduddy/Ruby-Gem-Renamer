@@ -16,16 +16,16 @@ RSpec.describe Renamer::DirectoryHandler do
     let(:mocked_file_handler) do
       instance_double(
         Renamer::FileHandler,
-        edit: 'edited',
-        rename: 'renamed'
+        edit: true,
+        rename: true
       )
     end
 
     it 'executes the file handler' do
       expect(Renamer::FileHandler).to receive(:new)
-        .exactly(4).times
+        .exactly(5).times
         .and_return(mocked_file_handler)
-      expect(mocked_file_handler).to receive(:edit).and_return('edited')
+      expect(mocked_file_handler).to receive(:edit).and_return(true)
       change_files
     end
   end

@@ -13,14 +13,18 @@ module RenameGem
       def change_files
         path.files.each do |file_path|
           file_handler = FileHandler.new(file_path)
-          file_handler.edit(context.from, context.to)
-          file_handler.rename(context.from, context.to)
+
+          old_path = file_path.to_s
+          puts "Edit #{old_path}" if file_handler.edit(context.from, context.to)
+          puts "Rename #{old_path} -> #{file_path.filename}" if file_handler.rename(context.from, context.to)
         end
       end
 
       def rename
+        old_path = path.to_s
         new_path = path.build(replacement(path.filename)).to_s
-        path.rename(new_path)
+
+        puts "Rename #{old_path} -> #{path.filename}" if path.rename(new_path)
       rescue StringReplacer::NoMatchError
         # ignore
       end

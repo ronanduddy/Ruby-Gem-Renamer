@@ -5,8 +5,6 @@ module RenameGem
     require 'pathname'
 
     class Path
-      RenameError = Class.new(StandardError)
-
       def initialize(path)
         @pathname = Pathname.new(path)
       end
@@ -36,16 +34,19 @@ module RenameGem
       end
 
       def rename(new_path)
+        renamed = false
+
         if file?
           File.rename(to_s, new_path)
+          renamed = true
         elsif directory?
           FileUtils.mv(to_s, new_path)
-        else
-          raise RenameError, "#{self} must be a file or a directory"
+          renamed = true
         end
 
-        puts "Rename #{self} -> #{self.class.new(new_path).filename}"
         @pathname = Pathname.new(new_path)
+
+        renamed
       end
 
       def file?
