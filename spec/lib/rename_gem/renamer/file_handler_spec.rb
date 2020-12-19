@@ -14,43 +14,63 @@ RSpec.describe Renamer::FileHandler do
   describe '#edit' do
     subject(:edit) { file_handler.edit(from, to) }
 
-    let(:content) do
-      <<~STR
-        class HelloWorld
-          def print_hello_world
-            puts 'hello world'
+    context 'when changes are made to the file' do
+      let(:content) do
+        <<~STR
+          class HelloWorld
+            def print_hello_world
+              puts 'hello world'
+            end
           end
-        end
-      STR
+        STR
+      end
+
+      let(:expected_content) do
+        <<~STR
+          class FooBar
+            def print_foo_bar
+              puts 'hello world'
+            end
+          end
+        STR
+      end
+
+      it 'edits the content of the file' do
+        file = File.new(location)
+        mode = file.stat.mode
+        gid = file.stat.uid
+        uid = file.stat.gid
+
+        expect(file.read).to eq content
+
+        expect(edit).to be true
+
+        new_file = File.new(location)
+        expect(new_file.read).to eq expected_content
+        expect(new_file.stat.mode).to eq mode
+        expect(new_file.stat.uid).to eq gid
+        expect(new_file.stat.gid).to eq uid
+      end
     end
 
-    let(:expected_content) do
-      <<~STR
-        class FooBar
-          def print_foo_bar
-            puts 'hello world'
-          end
-        end
-      STR
-    end
+    context 'when changes are not made to the file' do
+      let(:location) { regular_fixtures_file('rubbish.txt') }
 
-    it 'edits the content of the file' do
-      file = File.new(location)
-      mode = file.stat.mode
-      gid = file.stat.uid
-      uid = file.stat.gid
+      it 'does not edit the content of the file' do
+        file = File.new(location)
+        mode = file.stat.mode
+        gid = file.stat.uid
+        uid = file.stat.gid
 
-      expect(file.read).to eq content
-      expect(file_handler.changes).to be false
+        expect(edit).to be false
 
-      edit
+        new_file = File.new(location)
+        expect(new_file.stat.mode).to eq mode
+        expect(new_file.stat.uid).to eq gid
+        expect(new_file.stat.gid).to eq uid
 
-      new_file = File.new(location)
-      expect(new_file.read).to eq expected_content
-      expect(new_file.stat.mode).to eq mode
-      expect(new_file.stat.uid).to eq gid
-      expect(new_file.stat.gid).to eq uid
-      expect(file_handler.changes).to be true
+        expect(file.read).to eq new_file.read
+      end
     end
   end
 
@@ -62,7 +82,7 @@ RSpec.describe Renamer::FileHandler do
         hello_world_presence = File.exist?(regular_fixtures_file('hello_world.rb'))
         expect(hello_world_presence).to be true
 
-        rename
+        expect(rename).to be true
 
         foo_bar_presence = File.exist?(regular_fixtures_file('foo_bar.rb'))
         expect(foo_bar_presence).to be true
@@ -75,7 +95,9 @@ RSpec.describe Renamer::FileHandler do
     context 'when file name does not contain `from`' do
       let(:from) { 'blugh' }
 
-      it { expect { rename }.not_to raise_error }
+      it 'does not rename the file' do
+        expect(rename).to be false
+      end
     end
   end
 end

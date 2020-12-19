@@ -39,7 +39,8 @@ RSpec.describe Renamer::Runner do
          'nested_dirs/hello_world.rb',
          'nested_dirs/nested_hello_world',
          'nested_dirs/nested_hello_world/.keep',
-         'nested_dirs/nested_hello_world/hello_world_no_ext']
+         'nested_dirs/nested_hello_world/hello_world_no_ext',
+         'rubbish.txt']
       end
 
       let(:post_structure) do
@@ -61,7 +62,8 @@ RSpec.describe Renamer::Runner do
          'nested_dirs/foo_bar.rb',
          'nested_dirs/nested_foo_bar',
          'nested_dirs/nested_foo_bar/.keep',
-         'nested_dirs/nested_foo_bar/foo_bar_no_ext']
+         'nested_dirs/nested_foo_bar/foo_bar_no_ext',
+         'rubbish.txt']
       end
 
       it 'renames directories and files' do
