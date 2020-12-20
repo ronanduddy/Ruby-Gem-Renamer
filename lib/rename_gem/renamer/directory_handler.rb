@@ -7,28 +7,25 @@ module RenameGem
 
       def initialize(context)
         @context = context
-        @path = context.path
+        @path = Path.new(context.path, context.pwd)
         @results = []
       end
 
       def change_files
-        path.files.each do |file_path|
-          file_handler = FileHandler.new(file_path)
-
-          old_path = file_path.to_s
-          results << "Edit #{old_path}" if file_handler.edit(context.from, context.to)
-          results << "Rename #{old_path} -> #{file_handler.path.filename}" if file_handler.rename(context.from,
+        path.files.each do |pathname|
+          file_handler = FileHandler.new(pathname)
+          results << "Edit #{pathname}" if file_handler.edit(context.from, context.to)
+          results << "Rename #{pathname} -> #{file_handler.path.filename}" if file_handler.rename(context.from,
                                                                                                   context.to)
         end
       end
 
       def rename
-        old_path = path.to_s
         built_path = path.build(replacement(path.filename))
 
-        FileUtils.mv(path.absolute_path, built_path.absolute_path)
+        FileUtils.mv(path.to_s, built_path.to_s)
+        results << "Rename #{path} -> #{built_path.filename}"
         @path = built_path
-        results << "Rename #{old_path} -> #{built_path.filename}"
 
         true
       rescue StringReplacer::NoMatchError

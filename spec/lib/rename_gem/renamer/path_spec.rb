@@ -9,14 +9,10 @@ RSpec.describe Renamer::Path do
   let(:location) { 'files/here/hello_world.rb' }
   let(:pwd) { '/root' }
 
+  include_context 'fake file system'
+
   describe '#to_s' do
     subject(:to_s) { path.to_s }
-
-    it { is_expected.to eq 'files/here/hello_world.rb' }
-  end
-
-  describe '#absolute_path' do
-    subject(:absolute_path) { path.absolute_path }
 
     it { is_expected.to eq '/root/files/here/hello_world.rb' }
   end
@@ -32,16 +28,14 @@ RSpec.describe Renamer::Path do
     let(:new_location) { 'or/here/foo_bar.rb' }
 
     it 'returns new self with given path appended onto original path' do
-      expect(build.to_s).to eq 'files/here/or/here/foo_bar.rb'
-      expect(path.to_s).to eq 'files/here/hello_world.rb'
+      expect(build.to_s).to eq '/root/files/here/or/here/foo_bar.rb'
     end
   end
 
   describe '#directories' do
     subject(:directories) { path.directories }
-    let(:location) { regular_fixtures_dir }
-
-    include_context 'fake file system'
+    let(:pwd) { regular_fixtures_dir }
+    let(:location) { '' }
 
     it 'returns a list of Paths representing directories' do
       directories.each { |dir| expect(dir).to be_a_directory }
@@ -50,9 +44,8 @@ RSpec.describe Renamer::Path do
 
   describe '#files' do
     subject(:files) { path.files }
-    let(:location) { regular_fixtures_dir }
-
-    include_context 'fake file system'
+    let(:pwd) { regular_fixtures_dir }
+    let(:location) { '' }
 
     it 'returns a list of Paths representing files' do
       files.each { |file| expect(file).to be_a_file }
@@ -61,17 +54,16 @@ RSpec.describe Renamer::Path do
 
   describe '#file?' do
     subject(:file?) { path.file? }
-
-    include_context 'fake file system'
+    let(:pwd) { regular_fixtures_dir }
 
     context 'when file' do
-      let(:location) { "#{regular_fixtures_dir}/hello_world.rb" }
+      let(:location) { 'hello_world.rb' }
 
       it { is_expected.to be true }
     end
 
     context 'when directory' do
-      let(:location) { "#{regular_fixtures_dir}/hello_world_dir" }
+      let(:location) { 'hello_world_dir' }
 
       it { is_expected.to be false }
     end
@@ -79,17 +71,16 @@ RSpec.describe Renamer::Path do
 
   describe '#directory?' do
     subject(:directory?) { path.directory? }
-
-    include_context 'fake file system'
+    let(:pwd) { regular_fixtures_dir }
 
     context 'when file' do
-      let(:location) { "#{regular_fixtures_dir}/hello_world.rb" }
+      let(:location) { 'hello_world.rb' }
 
       it { is_expected.to be false }
     end
 
     context 'when directory' do
-      let(:location) { "#{regular_fixtures_dir}/hello_world_dir" }
+      let(:location) { 'hello_world_dir' }
 
       it { is_expected.to be true }
     end

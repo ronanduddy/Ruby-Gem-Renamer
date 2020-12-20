@@ -28,7 +28,7 @@ module RenameGem
         temp_file.close
 
         if changes
-          FileUtils.mv(temp_file.path, path.absolute_path)
+          FileUtils.mv(temp_file.path, path.to_s)
           possession.update(file)
         end
 
@@ -41,7 +41,7 @@ module RenameGem
         new_filename = replacement(path.filename, from, to)
         built_path = path.build(new_filename)
 
-        File.rename(path.absolute_path, built_path.absolute_path)
+        File.rename(path.to_s, built_path.to_s)
         @path = built_path
 
         true

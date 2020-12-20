@@ -3,21 +3,17 @@
 module RenameGem
   module Renamer
     class Context
-      attr_reader :from, :to
+      attr_reader :from, :to, :pwd, :path
 
-      def initialize(pwd, target_path, from, to)
+      def initialize(pwd, path, from, to)
         @pwd = pwd
-        @target_path = target_path
+        @path = path
         @from = from
         @to = to
       end
 
-      def path
-        Path.new(@target_path, @pwd)
-      end
-
       def using(new_path)
-        self.class.new(@pwd, new_path, from, to)
+        self.class.new(pwd, new_path, from, to)
       end
     end
   end

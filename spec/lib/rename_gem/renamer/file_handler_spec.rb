@@ -83,9 +83,9 @@ RSpec.describe Renamer::FileHandler do
         hello_world_presence = File.exist?(regular_fixtures_file('hello_world.rb'))
         expect(hello_world_presence).to be true
 
-        expect(file_handler.path.absolute_path).to eq '/usr/src/app/spec/fixtures/regular/hello_world.rb'
+        expect(file_handler.path.filename).to eq 'hello_world.rb'
         expect(rename).to be true
-        expect(file_handler.path.absolute_path).to eq '/usr/src/app/spec/fixtures/regular/foo_bar.rb'
+        expect(file_handler.path.filename).to eq 'foo_bar.rb'
 
         foo_bar_presence = File.exist?(regular_fixtures_file('foo_bar.rb'))
         expect(foo_bar_presence).to be true
