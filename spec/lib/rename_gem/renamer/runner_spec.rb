@@ -19,10 +19,12 @@ RSpec.describe Renamer::Runner do
   describe '#run' do
     subject(:run) { runner.run }
 
+    before { stub_const("#{described_class}::EXCLUDED_DIRS", ['.hidden']) }
+
     context 'with a directory' do
       let(:pre_structure) do
-        ['.git',
-         '.git/hello_world.rb',
+        ['.hidden',
+         '.hidden/hello_world.rb',
          '.hello_world',
          'HelloWorld',
          'HelloWorld/.keep',
@@ -45,8 +47,8 @@ RSpec.describe Renamer::Runner do
 
       let(:post_structure) do
         ['.foo_bar',
-         '.git',
-         '.git/hello_world.rb',
+         '.hidden',
+         '.hidden/hello_world.rb',
          'FooBar',
          'FooBar/.keep',
          'dir_foo_bar',
