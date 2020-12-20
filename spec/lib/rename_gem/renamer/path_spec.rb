@@ -5,13 +5,20 @@ require 'support/matchers/directory'
 require 'support/matchers/file'
 
 RSpec.describe Renamer::Path do
-  let(:path) { described_class.new(location) }
+  let(:path) { described_class.new(location, pwd) }
   let(:location) { 'files/here/hello_world.rb' }
+  let(:pwd) { '/root' }
 
   describe '#to_s' do
     subject(:to_s) { path.to_s }
 
     it { is_expected.to eq 'files/here/hello_world.rb' }
+  end
+
+  describe '#absolute_path' do
+    subject(:absolute_path) { path.absolute_path }
+
+    it { is_expected.to eq '/root/files/here/hello_world.rb' }
   end
 
   describe '#filename' do
@@ -49,46 +56,6 @@ RSpec.describe Renamer::Path do
 
     it 'returns a list of Paths representing files' do
       files.each { |file| expect(file).to be_a_file }
-    end
-  end
-
-  describe '#rename' do
-    subject(:rename) { path.rename(new_name) }
-
-    include_context 'fake file system'
-
-    context 'when non-existant' do
-      let(:location) { regular_fixtures_file('nowhere') }
-      let(:new_name) { regular_fixtures_file('foo_bar.rb') }
-
-      it 'renames the file' do
-        expect(File.exist?(location)).to be false
-        expect(rename).to be false
-      end
-    end
-
-    context 'when file' do
-      let(:location) { regular_fixtures_file('hello_world.rb') }
-      let(:new_name) { regular_fixtures_file('foo_bar.rb') }
-
-      it 'renames the file' do
-        expect(File.exist?(location)).to be true
-        expect(rename).to be true
-        expect(File.exist?(location)).to be false
-        expect(File.exist?(regular_fixtures_file('foo_bar.rb'))).to be true
-      end
-    end
-
-    context 'when directory' do
-      let(:location) { regular_fixtures_file('hello_world') }
-      let(:new_name) { regular_fixtures_file('foo_bar') }
-
-      it 'renames the file' do
-        expect(Dir.exist?(location)).to be true
-        expect(rename).to be true
-        expect(Dir.exist?(location)).to be false
-        expect(Dir.exist?(regular_fixtures_file('foo_bar'))).to be true
-      end
     end
   end
 
