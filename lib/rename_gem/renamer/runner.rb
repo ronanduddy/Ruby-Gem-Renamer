@@ -5,17 +5,16 @@ module RenameGem
     class Runner
       EXCLUDED_DIRS = ['.git'].freeze
 
-      attr_reader :options, :reporter
+      attr_reader :options, :reporter, :context
 
       def initialize(options)
         @options = options
         @reporter = Reporter.new
+        @context = Context.new(Dir.pwd, options[:path], options[:from], options[:to])
       end
 
       def run
-        context = Context.new(Dir.pwd, options[:path], options[:from], options[:to])
         directory = DirectoryHandler.new(context)
-
         recurse!(directory)
 
         reporter.print

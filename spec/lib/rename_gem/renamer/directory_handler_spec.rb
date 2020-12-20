@@ -17,37 +17,48 @@ RSpec.describe Renamer::DirectoryHandler do
       instance_double(
         Renamer::FileHandler,
         edit: true,
-        rename: true
+        rename: true,
+        path: instance_double(Renamer::Path, filename: 'filename.txt')
       )
     end
 
     it 'executes the file handler' do
+      expect(directory_handler.results).to be_empty
+
       expect(Renamer::FileHandler).to receive(:new)
         .exactly(5).times
         .and_return(mocked_file_handler)
       expect(mocked_file_handler).to receive(:edit).and_return(true)
+
       change_files
+
+      expect(directory_handler.results.count).to be 10
     end
   end
 
   describe '#rename' do
     subject(:rename) { directory_handler.rename }
-    let(:mocked_path) do
-      instance_double(
-        Renamer::Path,
-        filename: 'hello_world.rb',
-        rename: 'renamed'
-      )
+
+    context 'when directory cannot be renamed' do
+      it 'does not rename the directory and have results' do
+        is_expected.to be false
+        expect(directory_handler.results).to be_empty
+      end
     end
 
-    before do
-      allow(mocked_path).to receive(:build)
-    end
+    context 'when directory can be renamed' do
+      let(:path) { regular_fixtures_file('HelloWorld') }
 
-    it 'executes rename' do
-      expect(Renamer::Path).to receive(:new).and_return(mocked_path)
-      expect(mocked_path).to receive(:rename).and_return('renamed')
-      rename
+      it 'renames the directory and has results' do
+        expect(Dir.exist?(path)).to be true
+        expect(directory_handler.results).to be_empty
+
+        is_expected.to be true
+
+        expect(Dir.exist?(path)).to be false
+        expect(Dir.exist?(regular_fixtures_file('FooBar'))).to be true
+        expect(directory_handler.results).to_not be_empty
+      end
     end
   end
 
@@ -55,9 +66,8 @@ RSpec.describe Renamer::DirectoryHandler do
     subject(:directories) { directory_handler.directories }
 
     it 'lists a list of directories' do
-      directories.each do |dir|
-        presence = Dir.exist?(dir.path.to_s)
-        expect(presence).to be true
+      directories.each do |dir_path|
+        expect(Dir.exist?(dir_path.path.to_s)).to be true
       end
     end
   end

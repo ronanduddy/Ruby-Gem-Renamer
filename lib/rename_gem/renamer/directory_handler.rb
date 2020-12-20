@@ -7,7 +7,7 @@ module RenameGem
 
       def initialize(context)
         @context = context
-        @path = Path.new(context.absolute_path)
+        @path = context.path
         @results = []
       end
 
@@ -17,22 +17,27 @@ module RenameGem
 
           old_path = file_path.to_s
           results << "Edit #{old_path}" if file_handler.edit(context.from, context.to)
-          results << "Rename #{old_path} -> #{file_path.filename}" if file_handler.rename(context.from, context.to)
+          results << "Rename #{old_path} -> #{file_handler.path.filename}" if file_handler.rename(context.from,
+                                                                                                  context.to)
         end
       end
 
       def rename
         old_path = path.to_s
-        new_path = path.build(replacement(path.filename)).to_s
+        built_path = path.build(replacement(path.filename))
 
-        results << "Rename #{old_path} -> #{path.filename}" if path.rename(new_path)
+        FileUtils.mv(path.absolute_path, built_path.absolute_path)
+        @path = built_path
+        results << "Rename #{old_path} -> #{built_path.filename}"
+
+        true
       rescue StringReplacer::NoMatchError
-        # ignore
+        false
       end
 
       def directories
         path.directories.map do |directory_path|
-          self.class.new(context.as(directory_path.to_s))
+          self.class.new(context.using(directory_path.to_s))
         end
       end
 
