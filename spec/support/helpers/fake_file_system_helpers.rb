@@ -37,6 +37,7 @@ module Helpers
     def activate_fakefs(dir = nil)
       FakeFS.activate!
       FakeFS::FileSystem.clone(dir || regular_fixtures_dir)
+      FakeFS::FileSystem.chdir(dir || regular_fixtures_dir)
     end
 
     def deactivate_fakefs

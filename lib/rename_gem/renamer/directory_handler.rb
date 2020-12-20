@@ -14,9 +14,9 @@ module RenameGem
       def change_files
         path.files.each do |pathname|
           file_handler = FileHandler.new(pathname)
-          results << "Edit #{pathname}" if file_handler.edit(context.from, context.to)
-          results << "Rename #{pathname} -> #{file_handler.path.filename}" if file_handler.rename(context.from,
-                                                                                                  context.to)
+          results << "Edit #{pathname.path}" if file_handler.edit(context.from, context.to)
+          results << "Rename #{pathname.path} -> #{file_handler.path.filename}" if file_handler.rename(context.from,
+                                                                                                       context.to)
         end
       end
 
@@ -24,7 +24,8 @@ module RenameGem
         built_path = path.build(replacement(path.filename))
 
         FileUtils.mv(path.to_s, built_path.to_s)
-        results << "Rename #{path} -> #{built_path.filename}"
+
+        results << "Rename #{path.path} -> #{built_path.filename}"
         @path = built_path
 
         true
@@ -34,7 +35,7 @@ module RenameGem
 
       def directories
         path.directories.map do |directory_path|
-          self.class.new(context.using(directory_path.to_s))
+          self.class.new(context.using(directory_path.path))
         end
       end
 

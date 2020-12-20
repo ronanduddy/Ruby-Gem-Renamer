@@ -40,19 +40,19 @@ RSpec.describe CLI do
 
     let(:results) do
       <<~STR
-        Edit /usr/src/app/spec/fixtures/test_gem/bin/console
-        Edit /usr/src/app/spec/fixtures/test_gem/exe/project_name
-        Rename /usr/src/app/spec/fixtures/test_gem/exe/project_name -> foo_bar
-        Edit /usr/src/app/spec/fixtures/test_gem/lib/project_name/version.rb
-        Rename /usr/src/app/spec/fixtures/test_gem/lib/project_name -> foo_bar
-        Edit /usr/src/app/spec/fixtures/test_gem/lib/project_name.rb
-        Rename /usr/src/app/spec/fixtures/test_gem/lib/project_name.rb -> foo_bar.rb
-        Rename /usr/src/app/spec/fixtures/test_gem/spec/support/lib/project_name -> foo_bar
-        Edit /usr/src/app/spec/fixtures/test_gem/spec/spec_helper.rb
-        Edit /usr/src/app/spec/fixtures/test_gem/README.md
-        Edit /usr/src/app/spec/fixtures/test_gem/docker-compose.yml
-        Edit /usr/src/app/spec/fixtures/test_gem/project_name.gemspec
-        Rename /usr/src/app/spec/fixtures/test_gem/project_name.gemspec -> foo_bar.gemspec
+        Edit bin/console
+        Edit exe/project_name
+        Rename exe/project_name -> foo_bar
+        Edit lib/project_name/version.rb
+        Rename lib/project_name -> foo_bar
+        Edit lib/project_name.rb
+        Rename lib/project_name.rb -> foo_bar.rb
+        Rename spec/support/lib/project_name -> foo_bar
+        Edit spec/spec_helper.rb
+        Edit README.md
+        Edit docker-compose.yml
+        Edit project_name.gemspec
+        Rename project_name.gemspec -> foo_bar.gemspec
       STR
     end
 

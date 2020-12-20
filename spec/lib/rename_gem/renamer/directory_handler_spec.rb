@@ -17,13 +17,13 @@ RSpec.describe Renamer::DirectoryHandler do
     let(:path) { '' }
 
     let(:expected_results) do
-      ['Edit /usr/src/app/spec/fixtures/regular/.hello_world',
-       'Rename /usr/src/app/spec/fixtures/regular/.hello_world -> .foo_bar',
-       'Edit /usr/src/app/spec/fixtures/regular/hello_world.rb',
-       'Rename /usr/src/app/spec/fixtures/regular/hello_world.rb -> foo_bar.rb',
-       'Rename /usr/src/app/spec/fixtures/regular/hello_world_empty_spec.rb -> foo_bar_empty_spec.rb',
-       'Edit /usr/src/app/spec/fixtures/regular/hello_world_no_ext',
-       'Rename /usr/src/app/spec/fixtures/regular/hello_world_no_ext -> foo_bar_no_ext']
+      ['Edit .hello_world',
+       'Rename .hello_world -> .foo_bar',
+       'Edit hello_world.rb',
+       'Rename hello_world.rb -> foo_bar.rb',
+       'Rename hello_world_empty_spec.rb -> foo_bar_empty_spec.rb',
+       'Edit hello_world_no_ext',
+       'Rename hello_world_no_ext -> foo_bar_no_ext']
     end
 
     it 'executes the file handler' do
