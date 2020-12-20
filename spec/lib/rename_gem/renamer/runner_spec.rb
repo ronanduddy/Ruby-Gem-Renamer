@@ -67,9 +67,9 @@ RSpec.describe Renamer::Runner do
       end
 
       it 'renames directories and files' do
-        expect(regular_fixtures_dir_contents).to eq pre_structure
+        expect(regular_fixtures_dir_contents.sort).to eq pre_structure.sort
         run
-        expect(regular_fixtures_dir_contents).to eq post_structure
+        expect(regular_fixtures_dir_contents.sort).to eq post_structure.sort
       end
     end
   end
