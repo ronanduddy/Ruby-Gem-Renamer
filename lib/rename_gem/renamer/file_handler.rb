@@ -28,7 +28,7 @@ module RenameGem
         temp_file.close
 
         if changes
-          FileUtils.mv(temp_file.path, path.to_s)
+          FileUtils.mv(temp_file.path, path.absolute_path)
           possession.update(file)
         end
 
@@ -39,8 +39,10 @@ module RenameGem
 
       def rename(from, to)
         new_filename = replacement(path.filename, from, to)
-        new_path = path.build(new_filename).to_s
-        path.rename(new_path)
+        built_path = path.build(new_filename)
+
+        File.rename(path.absolute_path, built_path.absolute_path)
+        @path = built_path
 
         true
       rescue StringReplacer::NoMatchError
